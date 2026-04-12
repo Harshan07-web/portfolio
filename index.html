@@ -1,77 +1,262 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Harshan B | Data Engineer</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harshan B — Data Engineer</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+<div id="terminal-overlay" class="terminal-hidden">
+    <div class="terminal-header">
+        <span class="term-title">harshan@data-server: ~/portfolio</span>
+        <button id="close-terminal">✖</button>
+    </div>
+    <div class="terminal-body" id="terminal-output">
+        <div class="term-line sys-msg">System initialized. Harshan_OS v2.0</div>
+        <div class="term-line sys-msg">Type <span class="term-cmd">help</span> to view available system commands.</div>
+    </div>
+    <div class="terminal-input-line">
+        <span class="term-prompt">harshan@guest:~$</span>
+        <input type="text" id="terminal-input" autocomplete="off" spellcheck="false" autofocus>
+    </div>
+</div>
+
+<!-- ─── NAV ─────────────────────────────────────────────────── -->
+<nav class="nav">
+    <span class="nav-logo" id="logo-trigger" style="cursor: pointer;" title="Open Terminal">
+        &gt;_ harshan.b<span class="cursor">▋</span>
+    </span>
+    <div class="nav-links">
+        <a href="index.html"    class="nav-link active">Home</a>
+        <a href="projects.html" class="nav-link">Pipeline</a>
+        <a href="resume.html"   class="nav-link">Resume</a>
+    </div>
+</nav>
+
 <div class="container">
 
-    <header class="header-section">
-        <h1 class="main-title">Harshan B</h1>
-        <p class="tagline">
-            Data Engineering & AI Systems • Python • Databases • ML Pipelines
+    <!-- ─── HERO ───────────────────────────────────────────── -->
+    <section class="hero">
+
+        <h1 class="hero-name anim-1">
+            <span>Harshan B</span>
+        </h1>
+
+        <p class="hero-tagline anim-2">
+            Building <span class="hl-cyan">pipelines</span> that ingest,<br>
+            transform &amp; deliver <span class="hl-green">data that matters.</span>
         </p>
-    </header>
 
-    <div class="dashboard-grid">
+        <p class="hero-sub anim-3">
+            Engineering undergraduate focused on data systems, backend processing,
+            and applied machine learning. I turn messy inputs into reliable,
+            decision-ready outputs.
+        </p>
 
-        <div class="info-card about-card">
-            <h2>About</h2>
-            <p class="about-text">
-                I am an engineering undergraduate focused on building reliable data-driven
-                systems. My interests lie in data pipelines, backend processing, and applying
-                machine learning in practical, system-oriented ways. I enjoy reasoning about
-                problems, designing scalable logic, and turning raw data into meaningful insights.
-            </p>
+        <div class="hero-cta anim-4">
+            <a href="projects.html" class="btn btn-primary">Explore Pipeline →</a>
+            <a href="resume.html"   class="btn btn-ghost">Resume</a>
         </div>
+    </section>
 
-        <div class="info-card">
-            <h2>Data Engineering Stack</h2>
-
-            <h3>Languages</h3>
-            <ul class="skill-list">
-                <li class="skill-tag">Python</li>
-                <li class="skill-tag">Java</li>
-                <li class="skill-tag">SQL</li>
-            </ul>
-
-            <h3>Databases & Tools</h3>
-            <ul class="skill-list">
-                <li class="skill-tag">PostgreSQL</li>
-                <li class="skill-tag">MySQL</li>
-                <li class="skill-tag">MongoDB</li>
-                <li class="skill-tag">Git</li>
-                <li class="skill-tag">VS Code</li>
-            </ul>
-
-            <h3>AI & Systems</h3>
-            <ul class="skill-list">
-                <li class="skill-tag">Machine Learning</li>
-                <li class="skill-tag">LangChain</li>
-                <li class="skill-tag">LLM APIs</li>
-            </ul>
+    <!-- ─── STACK ──────────────────────────────────────────── -->
+    <section class="section">
+        <div class="section-label">// tech.stack</div>
+        <div class="stack-grid">
+            <div class="stack-group anim-1">
+                <div class="stack-group-label">Languages</div>
+                <div class="stack-tags">
+                    <span class="tag tag-cyan">Python</span>
+                    <span class="tag tag-cyan">Java</span>
+                    <span class="tag tag-cyan">SQL</span>
+                </div>
+            </div>
+            <div class="stack-group anim-2">
+                <div class="stack-group-label">Databases</div>
+                <div class="stack-tags">
+                    <span class="tag tag-green">PostgreSQL</span>
+                    <span class="tag tag-green">MySQL</span>
+                    <span class="tag tag-green">MongoDB</span>
+                </div>
+            </div>
+            <div class="stack-group anim-3">
+                <div class="stack-group-label">AI & LLM Systems</div>
+                <div class="stack-tags">
+                    <span class="tag tag-amber">Machine Learning</span>
+                    <span class="tag tag-amber">LangChain</span>
+                    <span class="tag tag-amber">LLM APIs</span>
+                </div>
+            </div>
+            <div class="stack-group anim-4">
+                <div class="stack-group-label">Tools</div>
+                <div class="stack-tags">
+                    <span class="tag tag-purple">Git</span>
+                    <span class="tag tag-purple">VS Code</span>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <div class="info-card">
-            <h2>Profiles</h2>
-            <ul class="social-list">
-                <li><a href="https://www.linkedin.com/in/harshan07-" target="_blank" class="social-link">LinkedIn</a></li>
-                <li><a href="https://github.com/Harshan07-web" target="_blank" class="social-link">GitHub</a></li>
-                <li><a href="https://leetcode.com/u/Harshan__7/" target="_blank" class="social-link">LeetCode</a></li>
-            </ul>
+    <!-- ─── ABOUT ──────────────────────────────────────────── -->
+    <section class="section">
+        <div class="section-label">// about.me</div>
+        <div class="about-grid">
+            <div class="about-text-block">
+                <p>
+                    I'm an engineering undergraduate passionate about building reliable,
+                    scalable data systems. My focus lies at the intersection of
+                    <span class="accent">data engineering</span>, backend processing, and
+                    <span class="accent-green">practical ML applications</span> — the kind
+                    that actually run in production.
+                </p>
+                <p>
+                    I enjoy reasoning through system architecture, designing clean data
+                    pipelines, and transforming raw, unstructured inputs into structured
+                    insights that power real decisions. Every project I build is a stage
+                    in a larger pipeline.
+                </p>
+                <p>
+                    Currently sharpening skills across the modern data stack — from
+                    ingestion and transformation to intelligent output layers powered
+                    by LLMs.
+                </p>
+            </div>
+            <div class="about-metrics">
+                <div class="metric">
+                    <span class="metric-value accent">4</span>
+                    <span class="metric-label">Projects Shipped</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-value accent-green">3</span>
+                    <span class="metric-label">DB Technologies</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-value accent-amber">2</span>
+                    <span class="metric-label">Languages</span>
+                </div>
+            </div>
         </div>
+    </section>
 
-    </div>
-
-    <div class="buttons">
-        <a href="projects.html" class="btn btn-primary">Projects</a>
-        <a href="resume.html" class="btn btn-secondary">Resume</a>
-    </div>
+    <!-- ─── CONNECT ────────────────────────────────────────── -->
+    <section class="section">
+        <div class="section-label">// connect.with.me</div>
+        <div class="connect-grid">
+            <a href="https://www.linkedin.com/in/harshan07-" target="_blank" class="connect-card anim-1">
+                <span class="connect-icon">in</span>
+                <span class="connect-name">LinkedIn</span>
+                <span class="connect-handle">@harshan07-</span>
+            </a>
+            <a href="https://github.com/Harshan07-web" target="_blank" class="connect-card anim-2">
+                <span class="connect-icon">gh</span>
+                <span class="connect-name">GitHub</span>
+                <span class="connect-handle">Harshan07-web</span>
+            </a>
+            <a href="https://leetcode.com/u/Harshan__7/" target="_blank" class="connect-card anim-3">
+                <span class="connect-icon">lc</span>
+                <span class="connect-name">LeetCode</span>
+                <span class="connect-handle">Harshan__7</span>
+            </a>
+        </div>
+    </section>
 
 </div>
 
+<footer class="footer">
+    <span>harshan.b © 2025 &nbsp;—&nbsp; engineered for data.</span>
+</footer>
+<script>
+    const terminal = document.getElementById('terminal-overlay');
+    const logoTrigger = document.getElementById('logo-trigger');
+    const closeBtn = document.getElementById('close-terminal');
+    const input = document.getElementById('terminal-input');
+    const output = document.getElementById('terminal-output');
+
+    // Toggle Terminal
+    function toggleTerminal() {
+        terminal.classList.toggle('terminal-hidden');
+        if (!terminal.classList.contains('terminal-hidden')) {
+            setTimeout(() => input.focus(), 100);
+        }
+    }
+
+    logoTrigger.addEventListener('click', toggleTerminal);
+    closeBtn.addEventListener('click', toggleTerminal);
+
+    // Keyboard shortcut to open (Ctrl + ` or ~)
+    document.addEventListener('keydown', (e) => {
+        if (e.key === '`') {
+            e.preventDefault();
+            toggleTerminal();
+        }
+    });
+
+    // Handle Commands
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            const command = this.value.trim().toLowerCase();
+            if (command) {
+                printLine(`<span class="term-prompt">harshan@guest:~$</span> ${command}`);
+                processCommand(command);
+            }
+            this.value = '';
+        }
+    });
+
+    function printLine(html) {
+        const div = document.createElement('div');
+        div.className = 'term-line';
+        div.innerHTML = html;
+        output.appendChild(div);
+        output.scrollTop = output.scrollHeight;
+    }
+
+    // --- THE PURPOSEFUL COMMANDS ---
+    function processCommand(cmd) {
+        switch(cmd) {
+            case 'help':
+                printLine(`Available commands:
+                    <br>&nbsp;&nbsp;<span class="term-cmd">whoami</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Display brief profile
+                    <br>&nbsp;&nbsp;<span class="term-cmd">query skills</span>&nbsp;&nbsp;- Fetch tech stack data
+                    <br>&nbsp;&nbsp;<span class="term-cmd">run pipeline</span>&nbsp;&nbsp;- Simulate ETL log output
+                    <br>&nbsp;&nbsp;<span class="term-cmd">fetch resume</span>&nbsp;&nbsp;- Download/open resume
+                    <br>&nbsp;&nbsp;<span class="term-cmd">contact</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Initialize communication
+                    <br>&nbsp;&nbsp;<span class="term-cmd">clear</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Clear the console`);
+                break;
+            case 'whoami':
+                printLine('Harshan B — Engineering undergraduate focused on data systems, backend processing, and applied machine learning.');
+                break;
+            case 'query skills':
+                printLine(`Fetching data...
+                    <br><span class="term-success">[OK]</span> Languages: Python, Java, SQL
+                    <br><span class="term-success">[OK]</span> Databases: PostgreSQL, MySQL, MongoDB
+                    <br><span class="term-success">[OK]</span> AI/ML: LangChain, LLM APIs, Sympy`);
+                break;
+            case 'run pipeline':
+                // Simulated ETL Log sequence
+                printLine('<span class="term-warning">[INIT]</span> Starting data_ingestion_job...');
+                setTimeout(() => printLine('<span class="term-success">[INFO]</span> Extracting raw unstructured files: SUCCESS (1.2s)'), 600);
+                setTimeout(() => printLine('<span class="term-warning">[WARN]</span> Null values detected in column "timestamp". Applying transformation...'), 1400);
+                setTimeout(() => printLine('<span class="term-success">[INFO]</span> Transformation complete. Loading to target warehouse...'), 2200);
+                setTimeout(() => printLine('<span class="term-success">[SUCCESS]</span> Pipeline completed. 402,109 rows processed.'), 3000);
+                break;
+            case 'fetch resume':
+                printLine('<span class="term-success">Opening resume in UI...</span>');
+                setTimeout(() => window.location.href = 'resume.html', 800);
+                break;
+            case 'contact':
+                printLine('Initializing email client...');
+                setTimeout(() => window.location.href = 'mailto:your.email@example.com', 800);
+                break;
+            case 'clear':
+                output.innerHTML = '';
+                break;
+            default:
+                printLine(`<span class="term-error">Command not found: ${cmd}</span>. Type 'help' for available commands.`);
+        }
+    }
+</script>
 </body>
 </html>

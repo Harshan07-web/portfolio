@@ -1,70 +1,422 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Projects | Harshan B</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects — Harshan B</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* ─── THE DAG (DIRECTED ACYCLIC GRAPH) LAYOUT ─── */
+        .project-dag {
+            position: relative;
+            padding-left: 48px;
+            margin-top: 50px;
+        }
+
+        /* The main vertical execution line - Updated to match the new node color flow */
+        .project-dag::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            bottom: 0;
+            left: 15px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--amber), var(--cyan), var(--purple), var(--green), var(--cyan), transparent);
+            opacity: 0.4;
+        }
+
+        .dag-node {
+            position: relative;
+            margin-bottom: 48px;
+        }
+
+        /* The connection point (Node) */
+        .dag-point {
+            position: absolute;
+            left: -48px;
+            top: 28px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 4px solid;
+            box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.8);
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .dag-point::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .dag-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 36px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 24px;
+            align-items: start;
+        }
+
+        /* Hover Interactions */
+        .dag-node:hover .dag-point {
+            transform: scale(1.15);
+        }
+        .dag-node:hover .dag-card {
+            border-color: var(--border-hi);
+            transform: translateY(-4px) translateX(4px);
+        }
+
+        /* Node Colors */
+        .node-cyan .dag-point { border-color: var(--cyan); color: var(--cyan); }
+        .node-cyan:hover .dag-point { box-shadow: 0 0 20px rgba(2, 132, 199, 0.3), 0 0 0 6px rgba(255, 255, 255, 0.8); }
+        .node-cyan:hover .dag-card { box-shadow: 0 15px 35px rgba(2, 132, 199, 0.08); }
+
+        .node-green .dag-point { border-color: var(--green); color: var(--green); }
+        .node-green:hover .dag-point { box-shadow: 0 0 20px rgba(5, 150, 105, 0.3), 0 0 0 6px rgba(255, 255, 255, 0.8); }
+        .node-green:hover .dag-card { box-shadow: 0 15px 35px rgba(5, 150, 105, 0.08); }
+
+        .node-amber .dag-point { border-color: var(--amber); color: var(--amber); }
+        .node-amber:hover .dag-point { box-shadow: 0 0 20px rgba(217, 119, 6, 0.3), 0 0 0 6px rgba(255, 255, 255, 0.8); }
+        .node-amber:hover .dag-card { box-shadow: 0 15px 35px rgba(217, 119, 6, 0.08); }
+
+        .node-purple .dag-point { border-color: var(--purple); color: var(--purple); }
+        .node-purple:hover .dag-point { box-shadow: 0 0 20px rgba(124, 58, 237, 0.3), 0 0 0 6px rgba(255, 255, 255, 0.8); }
+        .node-purple:hover .dag-card { box-shadow: 0 15px 35px rgba(124, 58, 237, 0.08); }
+
+        /* Typography & Spacing inside cards */
+        .dag-meta {
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .node-cyan .dag-meta { color: var(--cyan); }
+        .node-green .dag-meta { color: var(--green); }
+        .node-amber .dag-meta { color: var(--amber); }
+        .node-purple .dag-meta { color: var(--purple); }
+
+        .dag-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-hi);
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .dag-desc {
+            font-size: 0.95rem;
+            color: var(--text);
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        /* ─── KANBAN ROADMAP LAYOUT ─── */
+        .kanban-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .kanban-ticket {
+            background: rgba(255, 255, 255, 0.4);
+            border: 2px dashed rgba(15, 23, 42, 0.15);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .kanban-ticket:hover {
+            background: #ffffff;
+            border-style: solid;
+            border-color: var(--cyan);
+            box-shadow: 0 10px 25px rgba(2, 132, 199, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .ticket-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-hi);
+        }
+
+        .ticket-status {
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 50px;
+            background: rgba(15, 23, 42, 0.05);
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .ticket-desc {
+            font-size: 0.85rem;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .dag-card { grid-template-columns: 1fr; }
+            .project-dag { padding-left: 24px; }
+            .project-dag::before { left: 4px; }
+            .dag-point { left: -24px; width: 20px; height: 20px; border-width: 3px; top: 34px;}
+            .dag-point::after { display: none; }
+        }
+    </style>
 </head>
 <body>
 
+<nav class="nav">
+    <span class="nav-logo">&gt;_ harshan.b<span class="cursor">▋</span></span>
+    <div class="nav-links">
+        <a href="index.html"    class="nav-link">Home</a>
+        <a href="projects.html" class="nav-link active">Projects</a>
+        <a href="resume.html"   class="nav-link">Resume</a>
+    </div>
+</nav>
+
 <div class="container">
 
-    <header class="header-section">
-        <h1 class="main-title">Projects</h1>
-        <p class="tagline">
-            Systems, data pipelines, and applied AI work
+    <section class="hero" style="padding-bottom: 0;">
+        <h1 class="hero-name anim-1"><span>Data Systems</span></h1>
+        <p class="hero-tagline anim-2" style="font-size: 1.35rem;">
+            Real World, Pipelines and <span class="hl-cyan">applied AI</span> work.
         </p>
-    </header>
-
-    <section>
-
-        <div class="project-item">
-            <h3>Agreement Reader (LLM System)</h3>
-            <p>
-                Built a document-processing system that ingests agreements,
-                extracts structured information, and produces concise summaries
-                using large language models. Focused on reliability and clarity
-                over UI complexity.
-            </p>
-            <a href="https://github.com/Harshan07-web/Agreement-reader" target="_blank" class="btn btn-primary">GitHub</a>
-        </div>
-
-        <div class="project-item">
-            <h3>AI Math Tutor</h3>
-            <p>
-                Designed an AI-driven system that parses mathematical queries,
-                performs symbolic computation, and generates step-by-step
-                explanations. Emphasis on correctness and explainability.
-            </p>
-            <a href="https://github.com/Harshan07-web/AI-Math-Tutor" target="_blank" class="btn btn-primary">GitHub</a>
-        </div>
-
-        <div class="project-item">
-            <h3>Astronaut Radiation Assessment</h3>
-            <p>
-                Developed a data-oriented AI model to assess radiation exposure
-                risk by correlating environmental radiation data with biological
-                stress indicators over time.
-            </p>
-            <a href="https://github.com/Harshan07-web/Astronaut-Radiation-Exposure-Assessment" target="_blank" class="btn btn-primary">GitHub</a>
-        </div>
-
-        <div class="project-item">
-            <h3>Portfolio Website</h3>
-            <p>
-                Minimal, system-focused personal portfolio designed to highlight
-                engineering thinking, project structure, and technical clarity entirly using AI.
-            </p>
-            <a href="https://github.com/Harshan07-web/portfolio" target="_blank" class="btn btn-primary">GitHub</a>
-        </div>
-
     </section>
 
-    <div class="buttons">
-        <a href="index.html" class="btn btn-secondary">Back</a>
+    <section class="anim-3">
+        
+        <div class="project-dag">
+
+            <div class="dag-node node-amber">
+                <div class="dag-point"></div>
+                <div class="dag-card">
+                    <div>
+                        <span class="dag-meta">Node_01 · Analytics</span>
+                        <h3 class="dag-title">AI Log Correlation Engine</h3>
+                        <p class="dag-desc">
+                            An intelligent engine designed to correlate distributed server logs and events using AI techniques. It helps identify patterns, anomalies, and root causes of system failures by analyzing unstructured log data in real-time.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag tag-amber">AI / ML</span>
+                            <span class="tag tag-cyan">Log Analytics</span>
+                            <span class="tag tag-green">Python</span>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="https://github.com/Harshan07-web/AI_log_correlation_engine" target="_blank" class="btn btn-primary">GitHub</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dag-node node-cyan">
+                <div class="dag-point"></div>
+                <div class="dag-card">
+                    <div>
+                        <span class="dag-meta">Node_02 · Predictive ML</span>
+                        <h3 class="dag-title">Radiation Assessment</h3>
+                        <p class="dag-desc">
+                            ML model correlating biological and environmental signals to predict radiation risk for astronauts. Multi-variable feature engineering, regression modelling, and outlier detection on real mission data.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag tag-amber">Machine Learning</span>
+                            <span class="tag tag-cyan">Data Modelling</span>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="https://github.com/Harshan07-web/Astronaut-Radiation-Exposure-Assessment" target="_blank" class="btn btn-primary">GitHub</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dag-node node-purple">
+                <div class="dag-point"></div>
+                <div class="dag-card">
+                    <div>
+                        <span class="dag-meta">Node_03 · Infrastructure</span>
+                        <h3 class="dag-title">RX-Block</h3>
+                        <p class="dag-desc">
+                            A blockchain-based medicine authentication system designed to combat counterfeit drugs in the supply chain. Utilizes cryptographic hashing and distributed ledgers to securely verify the provenance and authenticity of pharmaceutical products.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag tag-cyan">Blockchain</span>
+                            <span class="tag tag-green">Cryptography</span>
+                            <span class="tag tag-purple">Architecture</span>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="#" class="btn btn-primary">GitHub</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dag-node node-green">
+                <div class="dag-point"></div>
+                <div class="dag-card">
+                    <div>
+                        <span class="dag-meta">Node_04 · Data Ingestion</span>
+                        <h3 class="dag-title">Agreement Reader</h3>
+                        <p class="dag-desc">
+                            An intelligent document ingestion pipeline that takes raw, unstructured legal agreements and transforms them into structured, queryable data using large language models. Solves the first-mile problem: getting messy real-world documents pipeline-ready.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag tag-cyan">Python</span>
+                            <span class="tag tag-purple">NLP</span>
+                            <span class="tag tag-amber">LLM APIs</span>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="https://github.com/Harshan07-web/Agreement-reader" target="_blank" class="btn btn-primary">GitHub</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dag-node node-cyan">
+                <div class="dag-point"></div>
+                <div class="dag-card">
+                    <div>
+                        <span class="dag-meta">Node_05 · Processing Engine</span>
+                        <h3 class="dag-title">AI Math Tutor</h3>
+                        <p class="dag-desc">
+                            Parses natural language math queries and performs symbolic computation, returning step-by-step solutions. Clean query ingestion → LLM processing → structured output. Emphasis on correctness and explainability over raw generation.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag tag-green">Python</span>
+                            <span class="tag tag-green">LangChain</span>
+                            <span class="tag tag-amber">Sympy</span>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="https://github.com/Harshan07-web/AI-Math-Tutor" target="_blank" class="btn btn-primary">GitHub</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dag-node node-purple">
+                <div class="dag-point"></div>
+                <div class="dag-card">
+                    <div>
+                        <span class="dag-meta">Node_06 · Presentation Layer</span>
+                        <h3 class="dag-title">Portfolio Interface</h3>
+                        <p class="dag-desc">
+                            Minimal, system-focused personal portfolio designed to highlight engineering thinking, project structure, and technical clarity. Built entirely using AI to rapidly prototype a cohesive design system.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag tag-purple">HTML / CSS</span>
+                            <span class="tag tag-cyan">UI Architecture</span>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="https://github.com/Harshan07-web/portfolio" target="_blank" class="btn btn-primary">GitHub</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section anim-4">
+        <div class="section-label">// sprint.backlog (Upcoming ETL Projects)</div>
+        
+        <div class="kanban-board">
+            
+            <div class="kanban-ticket">
+                <div class="ticket-header">
+                    <span class="ticket-title">Postgres ETL</span>
+                    <span class="ticket-status">Planned</span>
+                </div>
+                <p class="ticket-desc">Data modelling for a fictitious music startup Sparkify, applying STAR schema to ingest data and simplify queries that answer business questions.</p>
+            </div>
+
+            <div class="kanban-ticket">
+                <div class="ticket-header">
+                    <span class="ticket-title">Cassandra ETL</span>
+                    <span class="ticket-status">Planned</span>
+                </div>
+                <p class="ticket-desc">Adopting a query-centric approach to ingest large amounts of data into Cassandra (NoSQL) tables to answer business questions about a music app.</p>
+            </div>
+
+            <div class="kanban-ticket">
+                <div class="ticket-header">
+                    <span class="ticket-title">Scrapy & MongoDB ETL</span>
+                    <span class="ticket-status">Planned</span>
+                </div>
+                <p class="ticket-desc">Scraping semi-structured data from a book listing website using Scrapy, and storing the fields as queryable documents in MongoDB.</p>
+            </div>
+
+            <div class="kanban-ticket">
+                <div class="ticket-header">
+                    <span class="ticket-title">Redshift Data Warehouse</span>
+                    <span class="ticket-status">Planned</span>
+                </div>
+                <p class="ticket-desc">Creating a reliable and consistent data warehouse in AWS Redshift to provide a foundation for users to run analytical business queries.</p>
+            </div>
+
+            <div class="kanban-ticket">
+                <div class="ticket-header">
+                    <span class="ticket-title">Spark & S3 Data Lake</span>
+                    <span class="ticket-status">Planned</span>
+                </div>
+                <p class="ticket-desc">Ingesting JSON files, denormalizing them into fact/dimension tables, and uploading them into an AWS S3 data lake as parquet files using Spark.</p>
+            </div>
+
+            <div class="kanban-ticket">
+                <div class="ticket-header">
+                    <span class="ticket-title">Airflow Orchestration</span>
+                    <span class="ticket-status">Planned</span>
+                </div>
+                <p class="ticket-desc">Scheduling data pipelines as maintainable, versionable code using Airflow to perform ETL from JSON files in S3 directly to Redshift.</p>
+            </div>
+
+            <div class="kanban-ticket" style="grid-column: 1 / -1; border-color: var(--amber); background: rgba(217, 119, 6, 0.05);">
+                <div class="ticket-header">
+                    <span class="ticket-title" style="color: var(--amber);">Capstone: Movies Data Warehouse</span>
+                    <span class="ticket-status" style="background: var(--amber); color: #fff;">Epic Goal</span>
+                </div>
+                <p class="ticket-desc">Building a comprehensive movies data warehouse from scratch. The resulting infrastructure will be capable of powering a movie recommendation system and predicting box-office earnings.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <div style="margin-top: 60px; display:flex; justify-content:center;">
+        <a href="index.html" class="btn btn-ghost">← Back to Dashboard</a>
     </div>
 
 </div>
+
+<footer class="footer">
+    <span>harshan.b © 2026 &nbsp;—&nbsp; engineered for data.</span>
+</footer>
 
 </body>
 </html>

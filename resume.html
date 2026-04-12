@@ -1,30 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Resume | Harshan B</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume — Harshan B</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+<!-- ─── NAV ─────────────────────────────────────────────────── -->
+<nav class="nav">
+    <span class="nav-logo">
+        &gt;_ harshan.b<span class="cursor">▋</span>
+    </span>
+    <div class="nav-links">
+        <a href="index.html"    class="nav-link">Home</a>
+        <a href="projects.html" class="nav-link">Pipeline</a>
+        <a href="resume.html"   class="nav-link active">Resume</a>
+    </div>
+</nav>
+
 <div class="container">
-    <header class="header-section">
-        <h1 class="main-title">Resume</h1>
-        <p class="tagline">Structured experience & skills overview</p>
-    </header>
 
-    <div class="info-card">
-        <p>
-            Resume content coming soon.
-            This section will include education, technical skills,
-            projects, and experience in a clean, ATS-friendly format.
+    <!-- ─── HEADER ─────────────────────────────────────────── -->
+    <section class="hero" style="padding-bottom: 0;">
+        <h1 class="hero-name anim-1">
+            <span>Harshan B</span>
+        </h1>
+        <p class="hero-tagline anim-2" style="font-size: 1.3rem;">
+            Data Engineering &amp; <span class="hl-cyan">AI Systems</span> &nbsp;·&nbsp;
+            <span class="hl-green">Python · SQL · ML</span>
         </p>
+        <p class="hero-sub anim-3" style="font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.07em;">
+            Tamil Nadu, India &nbsp;·&nbsp;
+            <a href="https://github.com/Harshan07-web" target="_blank" style="color: var(--cyan); text-decoration:none;">github.com/Harshan07-web</a>
+            &nbsp;·&nbsp;
+            <a href="https://linkedin.com/in/harshan07-" target="_blank" style="color: var(--cyan); text-decoration:none;">linkedin.com/in/harshan07-</a>
+        </p>
+    </section>
+
+    <!-- ─── RESUME BODY ─────────────────────────────────────── -->
+    <div class="resume-layout">
+
+        <!-- ─ MAIN COLUMN ─ -->
+        <div class="resume-main">
+
+            <!-- OBJECTIVE -->
+            <div class="resume-block anim-1">
+                <div class="resume-block-title">// objective</div>
+                <p style="font-size: 0.95rem; line-height: 1.75; color: var(--text);">
+                    Aspiring Data Engineer with a strong foundation in Python, SQL, and
+                    database management systems. Passionate about designing scalable data
+                    pipelines, applying machine learning to real-world problems, and building
+                    backend systems that transform raw data into reliable, decision-ready
+                    insights. Eager to contribute to data-driven teams and grow within the
+                    modern data engineering ecosystem.
+                </p>
+            </div>
+
+            <!-- EDUCATION -->
+            <div class="resume-block anim-2">
+                <div class="resume-block-title">// education</div>
+                <div class="edu-entry">
+                    <div class="edu-degree">Bachelor of Engineering</div>
+                    <div class="edu-school">Computer Science &amp; Engineering</div>
+                    <div class="edu-meta">Tamil Nadu, India &nbsp;·&nbsp; 2022 – 2026 (Expected)</div>
+                </div>
+            </div>
+
+            <!-- PROJECTS -->
+            <div class="resume-block anim-3">
+                <div class="resume-block-title">// projects</div>
+
+                <div class="resume-proj-item">
+                    <div class="resume-proj-title">
+                        Agreement Reader
+                        <span style="font-family: var(--mono); font-size: 0.65rem; color: var(--muted); margin-left: 10px;">Python · LLM APIs · NLP</span>
+                    </div>
+                    <div class="resume-proj-desc">
+                        Built a document ingestion pipeline that processes unstructured legal
+                        agreements into structured, queryable data using large language models.
+                        Reduces manual review overhead and demonstrates end-to-end data ingestion
+                        using LLM-powered extraction.
+                    </div>
+                </div>
+
+                <div class="resume-proj-item">
+                    <div class="resume-proj-title">
+                        AI Math Tutor
+                        <span style="font-family: var(--mono); font-size: 0.65rem; color: var(--muted); margin-left: 10px;">Python · LangChain · LLM APIs</span>
+                    </div>
+                    <div class="resume-proj-desc">
+                        Developed a query-driven tutoring system that parses natural language
+                        math problems and uses symbolic computation to return step-by-step
+                        solutions. Showcases NLP query parsing and structured output generation.
+                    </div>
+                </div>
+
+                <div class="resume-proj-item">
+                    <div class="resume-proj-title">
+                        Astronaut Radiation Exposure Assessment
+                        <span style="font-family: var(--mono); font-size: 0.65rem; color: var(--muted); margin-left: 10px;">Python · ML · Data Modelling</span>
+                    </div>
+                    <div class="resume-proj-desc">
+                        Designed a machine learning model that correlates biological and
+                        environmental signals to predict radiation exposure risk for astronauts.
+                        Demonstrates multi-variable ML pipeline design from feature engineering
+                        to risk output.
+                    </div>
+                </div>
+
+                <div class="resume-proj-item">
+                    <div class="resume-proj-title">
+                        Portfolio Interface
+                        <span style="font-family: var(--mono); font-size: 0.65rem; color: var(--muted); margin-left: 10px;">HTML · CSS · JS</span>
+                    </div>
+                    <div class="resume-proj-desc">
+                        Architected and built a data-pipeline-themed portfolio website from
+                        scratch, applying system-design thinking to front-end structure and
+                        user experience.
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXPERIENCE / ACTIVITIES -->
+            <div class="resume-block anim-4">
+                <div class="resume-block-title">// activities & learning</div>
+                <div class="exp-entry">
+                    <div class="exp-title">Active LeetCode Practitioner</div>
+                    <div class="exp-where">leetcode.com/u/Harshan__7/</div>
+                    <ul class="exp-points">
+                        <li>Consistently solving algorithmic and data-structure problems in Python and Java.</li>
+                        <li>Focus on problems relevant to data engineering: sorting, graph traversal, dynamic programming.</li>
+                    </ul>
+                </div>
+                <div class="exp-entry">
+                    <div class="exp-title">Self-Directed Learning — Data Engineering Stack</div>
+                    <div class="exp-where">Ongoing</div>
+                    <ul class="exp-points">
+                        <li>Building projects across ingestion, transformation, and intelligence layers of data pipelines.</li>
+                        <li>Exploring LangChain, LLM orchestration, and modern database systems (PostgreSQL, MongoDB).</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ─ SIDEBAR ─ -->
+        <div class="resume-side">
+
+            <div class="resume-block anim-1">
+                <div class="resume-block-title">// languages</div>
+                <div class="side-skill-items">
+                    <span class="side-tag" style="color:var(--cyan); border-color:rgba(6,182,212,0.3);">Python</span>
+                    <span class="side-tag" style="color:var(--cyan); border-color:rgba(6,182,212,0.3);">Java</span>
+                    <span class="side-tag" style="color:var(--cyan); border-color:rgba(6,182,212,0.3);">SQL</span>
+                </div>
+            </div>
+
+            <div class="resume-block anim-2">
+                <div class="resume-block-title">// databases</div>
+                <div class="side-skill-items">
+                    <span class="side-tag" style="color:var(--green); border-color:rgba(16,185,129,0.3);">PostgreSQL</span>
+                    <span class="side-tag" style="color:var(--green); border-color:rgba(16,185,129,0.3);">MySQL</span>
+                    <span class="side-tag" style="color:var(--green); border-color:rgba(16,185,129,0.3);">MongoDB</span>
+                </div>
+            </div>
+
+            <div class="resume-block anim-3">
+                <div class="resume-block-title">// ai & ml</div>
+                <div class="side-skill-items">
+                    <span class="side-tag" style="color:var(--amber); border-color:rgba(245,158,11,0.3);">Machine Learning</span>
+                    <span class="side-tag" style="color:var(--amber); border-color:rgba(245,158,11,0.3);">LangChain</span>
+                    <span class="side-tag" style="color:var(--amber); border-color:rgba(245,158,11,0.3);">LLM APIs</span>
+                </div>
+            </div>
+
+            <div class="resume-block anim-4">
+                <div class="resume-block-title">// tools</div>
+                <div class="side-skill-items">
+                    <span class="side-tag" style="color:var(--purple); border-color:rgba(167,139,250,0.3);">Git</span>
+                    <span class="side-tag" style="color:var(--purple); border-color:rgba(167,139,250,0.3);">VS Code</span>
+                    <span class="side-tag" style="color:var(--purple); border-color:rgba(167,139,250,0.3);">GitHub</span>
+                </div>
+            </div>
+
+            <div class="resume-block" style="border-color: rgba(6,182,212,0.25); background: rgba(6,182,212,0.04);">
+                <div class="resume-block-title">// profiles</div>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <a href="https://github.com/Harshan07-web" target="_blank"
+                       style="font-family: var(--mono); font-size: 0.72rem; color: var(--cyan); text-decoration: none; letter-spacing: 0.06em;">
+                        ↗ GitHub
+                    </a>
+                    <a href="https://linkedin.com/in/harshan07-" target="_blank"
+                       style="font-family: var(--mono); font-size: 0.72rem; color: var(--cyan); text-decoration: none; letter-spacing: 0.06em;">
+                        ↗ LinkedIn
+                    </a>
+                    <a href="https://leetcode.com/u/Harshan__7/" target="_blank"
+                       style="font-family: var(--mono); font-size: 0.72rem; color: var(--cyan); text-decoration: none; letter-spacing: 0.06em;">
+                        ↗ LeetCode
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="buttons">
-        <a href="index.html" class="btn btn-secondary">Back</a>
+    <div style="margin-top: 48px; display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
+        <a href="index.html" class="btn btn-ghost">← Back to Home</a>
+        <a href="projects.html" class="btn btn-primary">View Pipeline →</a>
     </div>
+
 </div>
+
+<footer class="footer">
+    <span>harshan.b © 2025 &nbsp;—&nbsp; engineered for data.</span>
+</footer>
 
 </body>
 </html>
