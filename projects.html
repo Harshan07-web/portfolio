@@ -13,16 +13,15 @@
             margin-top: 50px;
         }
 
-        /* The main vertical execution line - Updated to match the new node color flow */
+        /* The main vertical execution line */
         .project-dag::before {
             content: '';
             position: absolute;
             top: 24px;
             bottom: 0;
             left: 15px;
-            width: 2px;
-            background: linear-gradient(to bottom, var(--amber), var(--cyan), var(--purple), var(--green), var(--cyan), transparent);
-            opacity: 0.4;
+            width: 1px;
+            background: var(--border-hi);
         }
 
         .dag-node {
@@ -35,17 +34,16 @@
             position: absolute;
             left: -48px;
             top: 28px;
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            background: #ffffff;
-            border: 4px solid;
-            box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.8);
+            background: var(--bg);
+            border: 2px solid;
             z-index: 2;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.2s ease;
         }
 
         .dag-point::after {
@@ -59,12 +57,9 @@
         .dag-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 36px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            transition: all 0.3s ease;
+            border-radius: 8px;
+            padding: 32px;
+            transition: border-color 0.2s ease;
             display: grid;
             grid-template-columns: 1fr auto;
             gap: 24px;
@@ -73,29 +68,24 @@
 
         /* Hover Interactions */
         .dag-node:hover .dag-point {
-            transform: scale(1.15);
+            transform: scale(1.1);
         }
         .dag-node:hover .dag-card {
             border-color: var(--border-hi);
-            transform: translateY(-4px) translateX(4px);
         }
 
         /* Node Colors */
         .node-cyan .dag-point { border-color: var(--cyan); color: var(--cyan); }
-        .node-cyan:hover .dag-point { box-shadow: 0 0 20px rgba(2, 132, 199, 0.3), 0 0 0 6px rgba(255, 255, 255, 0.8); }
-        .node-cyan:hover .dag-card { box-shadow: 0 15px 35px rgba(2, 132, 199, 0.08); }
+        .node-cyan:hover .dag-card { border-color: rgba(56, 189, 248, 0.4); }
 
         .node-green .dag-point { border-color: var(--green); color: var(--green); }
-        .node-green:hover .dag-point { box-shadow: 0 0 20px rgba(5, 150, 105, 0.3), 0 0 0 6px rgba(255, 255, 255, 0.8); }
-        .node-green:hover .dag-card { box-shadow: 0 15px 35px rgba(5, 150, 105, 0.08); }
+        .node-green:hover .dag-card { border-color: rgba(52, 211, 153, 0.4); }
 
         .node-amber .dag-point { border-color: var(--amber); color: var(--amber); }
-        .node-amber:hover .dag-point { box-shadow: 0 0 20px rgba(217, 119, 6, 0.3), 0 0 0 6px rgba(255, 255, 255, 0.8); }
-        .node-amber:hover .dag-card { box-shadow: 0 15px 35px rgba(217, 119, 6, 0.08); }
+        .node-amber:hover .dag-card { border-color: rgba(251, 191, 36, 0.4); }
 
         .node-purple .dag-point { border-color: var(--purple); color: var(--purple); }
-        .node-purple:hover .dag-point { box-shadow: 0 0 20px rgba(124, 58, 237, 0.3), 0 0 0 6px rgba(255, 255, 255, 0.8); }
-        .node-purple:hover .dag-card { box-shadow: 0 15px 35px rgba(124, 58, 237, 0.08); }
+        .node-purple:hover .dag-card { border-color: rgba(167, 139, 250, 0.4); }
 
         /* Typography & Spacing inside cards */
         .dag-meta {
@@ -136,21 +126,17 @@
         }
 
         .kanban-ticket {
-            background: rgba(255, 255, 255, 0.4);
-            border: 2px dashed rgba(15, 23, 42, 0.15);
-            border-radius: 16px;
-            padding: 24px;
-            transition: all 0.2s ease;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 22px;
+            transition: border-color 0.2s ease;
             display: flex;
             flex-direction: column;
         }
 
         .kanban-ticket:hover {
-            background: #ffffff;
-            border-style: solid;
-            border-color: var(--cyan);
-            box-shadow: 0 10px 25px rgba(2, 132, 199, 0.1);
-            transform: translateY(-4px);
+            border-color: var(--border-hi);
         }
 
         .ticket-header {
@@ -170,11 +156,13 @@
             font-family: var(--mono);
             font-size: 0.65rem;
             font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 50px;
-            background: rgba(15, 23, 42, 0.05);
+            padding: 3px 9px;
+            border-radius: 4px;
+            background: var(--bg-card-2);
+            border: 1px solid var(--border);
             color: var(--muted);
             text-transform: uppercase;
+            letter-spacing: 0.06em;
         }
 
         .ticket-desc {
@@ -233,7 +221,7 @@
                         </div>
                     </div>
                     <div>
-                        <a href="https://github.com/Harshan07-web/AI_log_correlation_engine" target="_blank" class="btn btn-primary">GitHub</a>
+                        <a href="https://github.com/Harshan07-web/AI_Based_Logs_Correlation_Engine.git" target="_blank" class="btn btn-primary">GitHub</a>
                     </div>
                 </div>
             </div>
@@ -253,7 +241,7 @@
                         </div>
                     </div>
                     <div>
-                        <a href="https://github.com/Harshan07-web/Astronaut-Radiation-Exposure-Assessment" target="_blank" class="btn btn-primary">GitHub</a>
+                        <a href="https://github.com/Harshan07-web/Astronaut-Radiation-Exposure-Assessment.git" target="_blank" class="btn btn-primary">GitHub</a>
                     </div>
                 </div>
             </div>
@@ -274,7 +262,7 @@
                         </div>
                     </div>
                     <div>
-                        <a href="#" class="btn btn-primary">GitHub</a>
+                        <a href="https://github.com/Harshan07-web/Rx-Block.git" class="btn btn-primary">GitHub</a>
                     </div>
                 </div>
             </div>
@@ -295,7 +283,7 @@
                         </div>
                     </div>
                     <div>
-                        <a href="https://github.com/Harshan07-web/Agreement-reader" target="_blank" class="btn btn-primary">GitHub</a>
+                        <a href="https://github.com/Harshan07-web/Agreement-reader.git" target="_blank" class="btn btn-primary">GitHub</a>
                     </div>
                 </div>
             </div>
@@ -316,7 +304,7 @@
                         </div>
                     </div>
                     <div>
-                        <a href="https://github.com/Harshan07-web/AI-Math-Tutor" target="_blank" class="btn btn-primary">GitHub</a>
+                        <a href="https://github.com/Harshan07-web/AI-Math-Tutor.git" target="_blank" class="btn btn-primary">GitHub</a>
                     </div>
                 </div>
             </div>
@@ -336,7 +324,7 @@
                         </div>
                     </div>
                     <div>
-                        <a href="https://github.com/Harshan07-web/portfolio" target="_blank" class="btn btn-primary">GitHub</a>
+                        <a href="https://github.com/Harshan07-web/portfolio.git" target="_blank" class="btn btn-primary">GitHub</a>
                     </div>
                 </div>
             </div>
@@ -397,10 +385,10 @@
                 <p class="ticket-desc">Scheduling data pipelines as maintainable, versionable code using Airflow to perform ETL from JSON files in S3 directly to Redshift.</p>
             </div>
 
-            <div class="kanban-ticket" style="grid-column: 1 / -1; border-color: var(--amber); background: rgba(217, 119, 6, 0.05);">
+            <div class="kanban-ticket" style="grid-column: 1 / -1; border-color: rgba(251,191,36,0.25);">
                 <div class="ticket-header">
                     <span class="ticket-title" style="color: var(--amber);">Capstone: Movies Data Warehouse</span>
-                    <span class="ticket-status" style="background: var(--amber); color: #fff;">Epic Goal</span>
+                    <span class="ticket-status" style="background: rgba(251,191,36,0.1); border-color: rgba(251,191,36,0.3); color: var(--amber);">Epic Goal</span>
                 </div>
                 <p class="ticket-desc">Building a comprehensive movies data warehouse from scratch. The resulting infrastructure will be capable of powering a movie recommendation system and predicting box-office earnings.</p>
             </div>
