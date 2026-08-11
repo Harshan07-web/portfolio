@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { apps } from "../data/apps";
+import { AppIcon } from "./Icons";
 
 export default function SearchOverlay({ onClose, onSelect }) {
   const [query, setQuery] = useState("");
@@ -54,7 +55,7 @@ export default function SearchOverlay({ onClose, onSelect }) {
               }}
               className="w-full flex items-center gap-3 px-4 py-2 text-left text-sm text-[#2E332F] hover:bg-[#EEF1EC]"
             >
-              <span>{app.icon}</span>
+              <AppIcon id={app.id} className="w-4 h-4 text-[#5B8266]" />
               <span>{app.title}</span>
             </button>
           ))}
