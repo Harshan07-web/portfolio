@@ -9,8 +9,8 @@ import { AppIcon } from "./Icons";
 
 let zCounter = 10;
 
-const ICON_W = 84;
-const ICON_H = 92;
+const ICON_W = 76;
+const ICON_H = 76;
 const DRAG_THRESHOLD = 4;
 
 export default function Desktop() {
@@ -82,7 +82,7 @@ export default function Desktop() {
 
   // Two icon rects "collide" if they overlap once a small breathing-room
   // margin is applied.
-  const ICON_MARGIN = 6;
+  const ICON_MARGIN = 2;
   const rectsOverlap = (a, b) =>
     a.left < b.left + ICON_W + ICON_MARGIN &&
     a.left + ICON_W + ICON_MARGIN > b.left &&
@@ -245,8 +245,40 @@ export default function Desktop() {
         <line x1="0" y1="72%" x2="100%" y2="76%" stroke="#5B8266" strokeOpacity="0.04" strokeWidth="1" />
       </svg>
 
+      {/* About text — sits directly on the wallpaper, no card/container */}
+      <div className="absolute top-16 right-16 bottom-24 w-[38%] flex flex-col justify-center text-right pointer-events-none select-none">
+        <h1 className="text-4xl font-medium text-[#3E453F]/85 tracking-tight">
+          Harshan
+        </h1>
+        <p className="mt-3 text-sm text-[#5B6259]/75">
+          Developer & CS student building across the stack.
+        </p>
+
+        <div className="mt-8 space-y-4 text-xs leading-relaxed text-[#5B6259]/70">
+          <p>
+            I work across Python, FastAPI, React, and applied ML — building
+            full-stack products, data pipelines, and ETL workflows end to end.
+          </p>
+          <p>
+            My focus lately has shifted toward data engineering: orchestration
+            with Airflow, warehousing with Snowflake, and building systems
+            that move and shape data reliably at scale.
+          </p>
+          <p>
+            Recent work includes FutHommie, a football statistics platform
+            with a FastAPI/MySQL backend and a full ETL pipeline, alongside
+            contributions to open source through GSSoC.
+          </p>
+        </div>
+
+        <div className="mt-8 flex flex-col gap-1 text-[10px] tracking-wide text-[#8A9086]/70">
+          <span>Python · FastAPI · React · MySQL</span>
+          <span>Airflow · Snowflake · Web3.py · LangChain</span>
+        </div>
+      </div>
+
       {/* Desktop icons — freely draggable */}
-      {apps.map((app) => {
+      {apps.filter((app) => app.id !== "about").map((app) => {
         const p = iconPos[app.id] || { top: 24, left: 24 };
         return (
           <button

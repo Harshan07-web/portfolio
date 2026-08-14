@@ -109,6 +109,15 @@ export function StartIcon({ className = "w-3.5 h-3.5" }) {
   );
 }
 
+export function BellIcon({ className = "w-3.5 h-3.5" }) {
+  return (
+    <svg viewBox="0 0 24 24" {...base} className={className}>
+      <path d="M6 10.5a6 6 0 0 1 12 0c0 3.2 1 4.8 1.6 5.5H4.4C5 15.3 6 13.7 6 10.5z" />
+      <path d="M10.3 19a1.8 1.8 0 0 0 3.4 0" />
+    </svg>
+  );
+}
+
 // Battery renders its own fill level, so it isn't purely stroke-based.
 export function BatteryIcon({ level = 100, className = "w-4 h-4" }) {
   const w = Math.max(0, Math.min(100, level)) / 100 * 13;
