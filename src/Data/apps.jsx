@@ -50,6 +50,63 @@ export const apps = [
     icon: "in",
     url: "https://linkedin.com/in/your-handle",
   },
+  // --- New Apps ---
+  {
+    id: "settings",
+    title: "Control Panel",
+    type: "window",
+    icon: "⚙️",
+    defaultSize: { width: 500, height: 400 },
+  },
+  {
+    id: "gallery",
+    title: "DAG Viewer",
+    type: "window",
+    icon: "🖼️",
+    defaultSize: { width: 700, height: 500 },
+  },
+  {
+    id: "browser",
+    title: "Web Explorer",
+    type: "window",
+    icon: "🌐",
+    defaultSize: { width: 800, height: 600 },
+  },
+  {
+    id: "database",
+    title: "SQL Optimizer",
+    type: "window",
+    icon: "🛢️",
+    defaultSize: { width: 600, height: 450 },
+  },
+  {
+    id: "blockchain",
+    title: "Eth Node",
+    type: "window",
+    icon: "⛓️",
+    defaultSize: { width: 550, height: 400 },
+  },
+  {
+    id: "aim_trainer",
+    title: "Claw Trainer",
+    type: "window",
+    icon: "🎯",
+    defaultSize: { width: 640, height: 480 },
+  },
+  {
+    id: "music",
+    title: "Lo-fi Player",
+    type: "window",
+    icon: "🎵",
+    defaultSize: { width: 320, height: 420 },
+  },
+  {
+    id: "trash",
+    title: "Recycle Bin",
+    type: "window",
+    icon: "🗑️",
+    defaultSize: { width: 400, height: 300 },
+  }
 ];
 
 export const projects = [

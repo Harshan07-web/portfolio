@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { apps } from "../data/apps";
 import Window from "./Window";
-import Taskbar from "./Taskbar";
+import Taskbar from "./TaskBar";
 import WindowContent from "./WindowContent";
 import SearchOverlay from "./SearchOverlay";
 import { AppIcon } from "./Icons";
@@ -14,20 +14,32 @@ const ICON_H = 76;
 const DRAG_THRESHOLD = 4;
 
 export default function Desktop() {
-  const [openWindows, setOpenWindows] = useState([]); // {id, z, minimized}
+  const [openWindows, setOpenWindows] = useState([]);
   const [selectedIcon, setSelectedIcon] = useState(null);
   const [searchOpen, setSearchOpen] = useState(false);
 
-  // Draggable desktop icon positions, keyed by app id.
+  // Splits icons between left and right sides on initial load
   const [iconPos, setIconPos] = useState(() => {
     const pos = {};
-    apps.forEach((app, i) => {
-      pos[app.id] = { top: 24 + i * ICON_H, left: 24 };
+    const rightAlignIds = ["settings", "gallery", "browser", "trash", "aim_trainer", "music", "database", "blockchain"];
+    let leftIdx = 0;
+    let rightIdx = 0;
+    
+    const vw = typeof window !== "undefined" ? window.innerWidth : 1200;
+
+    apps.forEach((app) => {
+      if (rightAlignIds.includes(app.id)) {
+        pos[app.id] = { top: 24 + rightIdx * ICON_H, left: vw - ICON_W - 24 };
+        rightIdx++;
+      } else {
+        pos[app.id] = { top: 24 + leftIdx * ICON_H, left: 24 };
+        leftIdx++;
+      }
     });
     return pos;
   });
 
-  const dragInfo = useRef(null); // { id, startX, startY, startTop, startLeft, moved }
+  const dragInfo = useRef(null);
 
   const openApp = (app) => {
     if (app.type === "link") {
@@ -62,7 +74,6 @@ export default function Desktop() {
       prev.map((w) => (w.id === id ? { ...w, minimized: !w.minimized } : w))
     );
 
-  // Keyboard shortcuts act on the topmost (focused) non-minimized window
   useEffect(() => {
     const handler = (e) => {
       const visible = openWindows.filter((w) => !w.minimized);
@@ -80,14 +91,12 @@ export default function Desktop() {
     return () => window.removeEventListener("keydown", handler);
   }, [openWindows]);
 
-  // Two icon rects "collide" if they overlap once a small breathing-room
-  // margin is applied.
   const ICON_MARGIN = 2;
   const rectsOverlap = (a, b) =>
-    a.left < b.left + ICON_W + ICON_MARGIN &&
-    a.left + ICON_W + ICON_MARGIN > b.left &&
-    a.top < b.top + ICON_H + ICON_MARGIN &&
-    a.top + ICON_H + ICON_MARGIN > b.top;
+    a.left < b.left + ICON_W - ICON_MARGIN &&
+    a.left + ICON_W - ICON_MARGIN > b.left &&
+    a.top < b.top + ICON_H - ICON_MARGIN &&
+    a.top + ICON_H - ICON_MARGIN > b.top;
 
   const collidesWithOther = (id, candidate, positions) =>
     apps.some((other) => {
@@ -97,10 +106,6 @@ export default function Desktop() {
       return rectsOverlap(candidate, otherPos);
     });
 
-  // Grid used only for conflict resolution on drop — icons still move
-  // freely (pixel-by-pixel, can overlap) while dragging, exactly like a
-  // real OS. Only once you let go do we check whether the spot is taken,
-  // and if so, bump the icon to the nearest free slot beside/below it.
   const ORIGIN = { top: 24, left: 24 };
   const toCell = (pos) => ({
     col: Math.round((pos.left - ORIGIN.left) / ICON_W),
@@ -119,10 +124,6 @@ export default function Desktop() {
 
   const findFreeSpot = (id, desiredPos, positions) => {
     const desiredCell = toCell(desiredPos);
-
-    // Ring-by-ring search around the drop cell: prefer directly below,
-    // then to the side, then further out — so the icon lands "aside or
-    // below" the one it was dropped on, like Windows auto-arrange.
     const tryCell = (cell) => {
       if (!cellInBounds(cell)) return null;
       const pos = fromCell(cell);
@@ -136,12 +137,11 @@ export default function Desktop() {
     const maxRadius = 40;
     for (let radius = 1; radius <= maxRadius; radius++) {
       const candidates = [
-        { row: desiredCell.row + radius, col: desiredCell.col }, // below
-        { row: desiredCell.row, col: desiredCell.col + 1 }, // right
-        { row: desiredCell.row - radius, col: desiredCell.col }, // above
-        { row: desiredCell.row, col: desiredCell.col - 1 }, // left
+        { row: desiredCell.row + radius, col: desiredCell.col },
+        { row: desiredCell.row, col: desiredCell.col + 1 },
+        { row: desiredCell.row - radius, col: desiredCell.col },
+        { row: desiredCell.row, col: desiredCell.col - 1 },
       ];
-      // widen the sweep as radius grows so we don't get stuck in a thin column
       for (let c = -radius; c <= radius; c++) {
         candidates.push({ row: desiredCell.row + radius, col: desiredCell.col + c });
         candidates.push({ row: desiredCell.row - radius, col: desiredCell.col + c });
@@ -151,8 +151,6 @@ export default function Desktop() {
         if (pos) return pos;
       }
     }
-
-    // Fallback: clamp desired position as-is (shouldn't really happen)
     return desiredPos;
   };
 
@@ -187,8 +185,6 @@ export default function Desktop() {
         left: Math.min(Math.max(0, info.startLeft + dx), Math.max(0, maxLeft)),
       };
 
-      // Move freely while dragging — overlap is fine mid-drag, just like
-      // real desktop icons. We only resolve collisions on drop.
       setIconPos((prev) => ({
         ...prev,
         [info.id]: candidate,
@@ -202,8 +198,6 @@ export default function Desktop() {
       dragInfo.current = null;
       if (!info || !info.moved) return;
 
-      // Drop resolution: if the icon was released on top of another one,
-      // snap it to the nearest free grid slot beside/below instead.
       setIconPos((prev) => {
         const droppedAt = prev[info.id];
         if (!droppedAt) return prev;
@@ -232,7 +226,6 @@ export default function Desktop() {
       }}
       onMouseDown={() => setSelectedIcon(null)}
     >
-      {/* Soft geometric accents — purely decorative, sit behind everything */}
       <svg
         className="absolute inset-0 w-full h-full pointer-events-none"
         preserveAspectRatio="none"
@@ -245,39 +238,59 @@ export default function Desktop() {
         <line x1="0" y1="72%" x2="100%" y2="76%" stroke="#5B8266" strokeOpacity="0.04" strokeWidth="1" />
       </svg>
 
-      {/* About text — sits directly on the wallpaper, no card/container */}
-      <div className="absolute top-16 right-16 bottom-24 w-[38%] flex flex-col justify-center text-right pointer-events-none select-none">
-        <h1 className="text-4xl font-medium text-[#3E453F]/85 tracking-tight">
-          Harshan
-        </h1>
-        <p className="mt-3 text-sm text-[#5B6259]/75">
-          Developer & CS student building across the stack.
-        </p>
-
-        <div className="mt-8 space-y-4 text-xs leading-relaxed text-[#5B6259]/70">
-          <p>
-            I work across Python, FastAPI, React, and applied ML — building
-            full-stack products, data pipelines, and ETL workflows end to end.
-          </p>
-          <p>
-            My focus lately has shifted toward data engineering: orchestration
-            with Airflow, warehousing with Snowflake, and building systems
-            that move and shape data reliably at scale.
-          </p>
-          <p>
-            Recent work includes FutHommie, a football statistics platform
-            with a FastAPI/MySQL backend and a full ETL pipeline, alongside
-            contributions to open source through GSSoC.
-          </p>
+      {/* About Section — Centered Bento Grid */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] max-w-4xl flex flex-col justify-center pointer-events-none select-none z-0">
+        
+        <div className="flex items-end justify-between border-b border-[#5B8266]/20 pb-6 mb-6">
+          <div>
+            <h1 className="text-7xl font-medium text-[#3E453F] tracking-tighter">
+              Harshan
+            </h1>
+            <p className="mt-2 text-sm text-[#5B8266] font-mono uppercase tracking-widest">
+              Data Engineer // CS Student
+            </p>
+          </div>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#5B8266] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#5B8266]"></span>
+            </span>
+            <span className="text-[10px] font-mono text-[#8A9086] tracking-wider">SYSTEM_ONLINE</span>
+          </div>
         </div>
 
-        <div className="mt-8 flex flex-col gap-1 text-[10px] tracking-wide text-[#8A9086]/70">
-          <span>Python · FastAPI · React · MySQL</span>
-          <span>Airflow · Snowflake · Web3.py · LangChain</span>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="bg-white/40 border border-[#DCE1DB]/80 p-5 rounded-xl backdrop-blur-md shadow-sm">
+            <h3 className="text-[10px] font-mono text-[#5B8266] mb-2.5 uppercase tracking-wider">01. The Stack</h3>
+            <p className="text-xs leading-relaxed text-[#5B6259]">
+              Working across Python, FastAPI, React, and applied ML to build full-stack products, data pipelines, and robust ETL workflows end to end.
+            </p>
+          </div>
+          
+          <div className="bg-white/40 border border-[#DCE1DB]/80 p-5 rounded-xl backdrop-blur-md shadow-sm">
+            <h3 className="text-[10px] font-mono text-[#5B8266] mb-2.5 uppercase tracking-wider">02. Current Focus</h3>
+            <p className="text-xs leading-relaxed text-[#5B6259]">
+              Orchestration with Airflow, warehousing with Snowflake, and engineering backend systems that move and shape data reliably at scale.
+            </p>
+          </div>
+
+          <div className="bg-white/40 border border-[#DCE1DB]/80 p-5 rounded-xl backdrop-blur-md shadow-sm col-span-2">
+            <h3 className="text-[10px] font-mono text-[#5B8266] mb-2.5 uppercase tracking-wider">03. Recent Deployments</h3>
+            <p className="text-xs leading-relaxed text-[#5B6259]">
+              Architected Rx-Block, a blockchain-powered pharmaceutical tracking system, alongside FutHommie, a football statistics platform featuring a complete FastAPI/MySQL ETL pipeline.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-6 flex flex-wrap gap-2">
+          {['Python', 'FastAPI', 'React', 'MySQL', 'Airflow', 'Snowflake', 'Web3.py', 'Solidity'].map(tag => (
+            <span key={tag} className="px-3 py-1.5 bg-[#5B8266]/5 border border-[#5B8266]/20 rounded-md text-[10px] text-[#5B8266] font-mono tracking-wide">
+              {tag}
+            </span>
+          ))}
         </div>
       </div>
 
-      {/* Desktop icons — freely draggable */}
       {apps.filter((app) => app.id !== "about").map((app) => {
         const p = iconPos[app.id] || { top: 24, left: 24 };
         return (
@@ -297,14 +310,13 @@ export default function Desktop() {
             }`}
           >
             <AppIcon id={app.id} className="w-7 h-7 text-[#3E453F]" />
-            <span className="text-xs text-[#2E332F] text-center leading-tight">
+            <span className="text-xs text-[#2E332F] text-center leading-tight shadow-white drop-shadow-md">
               {app.title}
             </span>
           </button>
         );
       })}
 
-      {/* Windows */}
       {openWindows.map((w) => {
         const app = apps.find((a) => a.id === w.id);
         if (!app || w.minimized) return null;
