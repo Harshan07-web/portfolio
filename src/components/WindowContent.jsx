@@ -1,110 +1,108 @@
-import { useState, useEffect } from "react";
 import { projects } from "../data/apps";
 import Terminal from "./Terminal";
+import { useState, useEffect, useRef } from "react";
 
 // --- MINI APPS ---
 
-function AimTrainer() {
-  const [score, setScore] = useState(0);
-  const [pos, setPos] = useState({ top: 50, left: 50 });
+function LofiPlayer() {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [trackIndex, setTrackIndex] = useState(0);
+  const [volume, setVolume] = useState(0.5); // Default to 50% volume
+  const audioRef = useRef(null);
 
-  const moveTarget = () => {
-    setPos({
-      top: Math.random() * 80 + 10,
-      left: Math.random() * 80 + 10,
-    });
+  // Add your own local MP3s here later! (e.g., src: "/my-song.mp3")
+  const playlist = [
+    { 
+      title: "Deep Focus.mp3", 
+      artist: "Coding Session // Vol. 1", 
+      src: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" 
+    },
+    { 
+      title: "Late Night Code.mp3", 
+      artist: "Coding Session // Vol. 2", 
+      src: "https://cdn.pixabay.com/download/audio/2022/04/27/audio_7569b3f947.mp3" 
+    },
+    { 
+      title: "Bugs & Brews.mp3", 
+      artist: "Coding Session // Vol. 3", 
+      src: "https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8b8285513.mp3" 
+    }
+  ];
+
+  const currentTrack = playlist[trackIndex];
+
+  // Sync the React volume state with the actual HTML audio element
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, [volume]);
+
+  const togglePlay = () => {
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setIsPlaying(!isPlaying);
   };
 
-  return (
-    <div className="relative w-full h-full bg-[#1E211D] overflow-hidden flex flex-col items-center justify-center select-none">
-      <div className="absolute top-4 left-4 text-xs font-mono text-[#7FB08A]">
-        Score: {score} | Config: 4-Finger Claw + Full Gyro 
-      </div>
-      {score === 0 ? (
-        <button
-          onClick={() => { setScore(1); moveTarget(); }}
-          className="px-6 py-2 border border-[#7FB08A] text-[#7FB08A] font-mono text-xs rounded hover:bg-[#7FB08A] hover:text-[#1E211D] transition-colors"
-        >
-          INITIATE WARMUP
-        </button>
-      ) : (
-        <button
-          onMouseDown={(e) => {
-            e.stopPropagation();
-            setScore(s => s + 1);
-            moveTarget();
-          }}
-          style={{ top: `${pos.top}%`, left: `${pos.left}%` }}
-          className="absolute w-8 h-8 bg-[#C96A5A] rounded-full transform -translate-x-1/2 -translate-y-1/2 shadow-[0_0_12px_#C96A5A]"
-        />
-      )}
-    </div>
-  );
-}
+  const nextTrack = () => {
+    setTrackIndex((prev) => (prev + 1) % playlist.length);
+  };
 
-function DatabaseManager() {
-  return (
-    <div className="w-full h-full bg-[#1E211D] text-[#D7E4D3] font-mono text-xs p-4 overflow-auto">
-      <div className="text-[#8A9086]">-- Connected to Snowflake WH: futhommie_prod --</div>
-      <div className="mt-3 text-[#E8B84B] leading-relaxed">
-        WITH RankedStats AS (<br/>
-        &nbsp;&nbsp;SELECT player_id, goals, assists,<br/>
-        &nbsp;&nbsp;RANK() OVER(PARTITION BY team_id ORDER BY goals DESC) as team_rank<br/>
-        &nbsp;&nbsp;FROM player_match_logs<br/>
-        )<br/>
-        SELECT * FROM RankedStats WHERE team_rank = 1;
-      </div>
-      <div className="mt-4 border-t border-[#3E453F] pt-3">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="border-b border-[#3E453F] text-[#7FB08A]">
-              <th className="pb-2 font-normal">player_id</th>
-              <th className="pb-2 font-normal">goals</th>
-              <th className="pb-2 font-normal">assists</th>
-              <th className="pb-2 font-normal">team_rank</th>
-            </tr>
-          </thead>
-          <tbody className="text-[#9AA098]">
-            <tr><td className="py-1.5">P_1001</td><td>24</td><td>12</td><td>1</td></tr>
-            <tr><td className="py-1.5">P_2044</td><td>18</td><td>8</td><td>1</td></tr>
-            <tr><td className="py-1.5">P_3012</td><td>15</td><td>15</td><td>1</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div className="mt-4 text-[#7FB08A] animate-pulse"> Query executed in 1.24s. Optimized via CTE.</div>
-    </div>
-  );
-}
-
-function BlockchainNode() {
-  const [logs, setLogs] = useState([
-    "[Ganache CLI] Starting local RPC server...",
-    "Listening on 127.0.0.1:8545",
-    "Initializing Rx-Block smart contracts..."
-  ]);
+  const prevTrack = () => {
+    setTrackIndex((prev) => (prev - 1 + playlist.length) % playlist.length);
+  };
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setLogs(prev => [
-        ...prev, 
-        `[Block #${prev.length - 2}] Mined successfully! Hash: 0x${Math.random().toString(16).substr(2, 12)}...`
-      ]);
-    }, 3000);
-    return () => clearInterval(timer);
-  }, []);
+    if (isPlaying && audioRef.current) {
+      audioRef.current.play().catch(e => console.log("Playback blocked:", e));
+    }
+  }, [trackIndex, isPlaying]);
 
   return (
-    <div className="w-full h-full bg-[#1E211D] text-[#7FB08A] font-mono text-[11px] p-4 overflow-auto flex flex-col gap-1">
-      {logs.map((log, i) => (
-        <div key={i} className={log.includes("Rx-Block") ? "text-[#E8B84B]" : ""}>
-          {log}
-        </div>
-      ))}
+    <div className="flex flex-col items-center justify-center h-full gap-5">
+      <audio 
+        ref={audioRef} 
+        src={currentTrack.src} 
+        onEnded={nextTrack} 
+      />
+      
+      <div className={`w-24 h-24 rounded-full bg-[#2E332F] flex items-center justify-center shadow-lg transition-transform ${isPlaying ? 'animate-[spin_4s_linear_infinite]' : ''}`}>
+        <div className="w-6 h-6 rounded-full bg-[#F4F6F3]" />
+      </div>
+      
+      <div className="text-center">
+        <div className="text-sm font-medium text-[#2E332F]">{currentTrack.title}</div>
+        <div className="text-xs text-[#5B8266] mt-1">{currentTrack.artist}</div>
+      </div>
+      
+      <div className="flex gap-4 items-center">
+        <button onClick={prevTrack} className="text-[#2E332F] hover:text-[#5B8266] transition-colors">⏮</button>
+        <button onClick={togglePlay} className="text-[#2E332F] hover:text-[#5B8266] text-2xl w-6 transition-colors flex justify-center">
+          {isPlaying ? "⏸" : "▶"}
+        </button>
+        <button onClick={nextTrack} className="text-[#2E332F] hover:text-[#5B8266] transition-colors">⏭</button>
+      </div>
+
+      {/* Volume Slider */}
+      <div className="flex items-center gap-2 mt-2 w-32">
+        <span className="text-[10px] text-[#8A9086]">🔈</span>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={volume}
+          onChange={(e) => setVolume(parseFloat(e.target.value))}
+          className="w-full h-1 bg-[#DCE1DB] rounded-lg appearance-none cursor-pointer accent-[#5B8266]"
+        />
+        <span className="text-[10px] text-[#8A9086]">🔊</span>
+      </div>
     </div>
   );
 }
-
-// --- MAIN CONTENT SWITCHER ---
 
 export default function WindowContent({ appId }) {
   switch (appId) {
@@ -177,8 +175,6 @@ export default function WindowContent({ appId }) {
         </div>
       );
 
-    /* --- NEW APPS CONTENT --- */
-
     case "settings":
       return (
         <div className="p-2 space-y-4 text-sm">
@@ -197,16 +193,6 @@ export default function WindowContent({ appId }) {
         </div>
       );
 
-    case "gallery":
-      return (
-        <div className="w-full h-full flex items-center justify-center bg-[#EEF1EC] border border-dashed border-[#DCE1DB] rounded">
-          <div className="text-center">
-            <div className="text-4xl mb-3">🕸️</div>
-            <p className="text-xs font-mono text-[#6E766F]">Airflow DAG Visualization<br/>Loading schema...</p>
-          </div>
-        </div>
-      );
-
     case "browser":
       return (
         <div className="w-full h-full flex flex-col">
@@ -219,32 +205,70 @@ export default function WindowContent({ appId }) {
         </div>
       );
 
-    case "database":
-      return <DatabaseManager />;
-
-    case "blockchain":
-      return <BlockchainNode />;
-
-    case "aim_trainer":
-      return <AimTrainer />;
-
-    case "music":
+    case "certificates":
       return (
-        <div className="flex flex-col items-center justify-center h-full gap-6">
-          <div className="w-24 h-24 rounded-full bg-[#2E332F] flex items-center justify-center shadow-lg animate-[spin_10s_linear_infinite]">
-            <div className="w-6 h-6 rounded-full bg-[#F4F6F3]" />
+        <div className="space-y-3 text-sm text-[#3E453F] p-2">
+          <div className="p-3 border border-[#DCE1DB] rounded hover:border-[#5B8266] transition-colors cursor-default">
+            <div className="font-medium">AWS Certified Cloud Practitioner</div>
+            <div className="text-xs text-[#9AA098] mt-1">Amazon Web Services</div>
           </div>
-          <div className="text-center">
-            <div className="text-sm font-medium text-[#2E332F]">Deep Focus.mp3</div>
-            <div className="text-xs text-[#5B8266] mt-1">Coding Session // Vol. 1</div>
-          </div>
-          <div className="flex gap-4">
-            <button className="text-[#2E332F] hover:text-[#5B8266]">⏮</button>
-            <button className="text-[#2E332F] hover:text-[#5B8266] text-xl">▶</button>
-            <button className="text-[#2E332F] hover:text-[#5B8266]">⏭</button>
+          <div className="p-3 border border-[#DCE1DB] rounded hover:border-[#5B8266] transition-colors cursor-default">
+            <div className="font-medium">Data Engineering Professional Certificate</div>
+            <div className="text-xs text-[#9AA098] mt-1">Coursera</div>
           </div>
         </div>
       );
+
+    case "hackathons":
+      return (
+        <div className="space-y-4 font-mono text-xs p-2">
+          <div className="border border-[#DCE1DB] p-4 rounded bg-[#EEF1EC]/50">
+            <div className="text-[#E8B84B] text-sm font-bold">Smart India Hackathon (SIH) 2025</div>
+            <div className="text-[#5B6259] mt-2">Project: Blockchain-Based Blue Carbon Registry</div>
+            <div className="text-[#9AA098] mt-2">Built a decentralized ledger system to track and verify blue carbon credits.</div>
+          </div>
+          <div className="border border-[#DCE1DB] p-4 rounded bg-[#EEF1EC]/50">
+            <div className="text-[#5B8266] text-sm font-bold">Smart Motion Hackathon 2.0</div>
+            <div className="text-[#5B6259] mt-2">Chennai Institute of Technology (CIT) · Dec 2025</div>
+            <div className="text-[#9AA098] mt-2">Developed and proposed technical abstracts for local problem statements.</div>
+          </div>
+        </div>
+      );
+
+    case "gssoc":
+      return (
+        <div className="h-full flex flex-col justify-center items-center text-center p-4">
+          <div className="w-16 h-16 bg-[#EEF1EC] rounded-full flex items-center justify-center text-2xl mb-4 text-[#5B8266]">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-8 h-8">
+              <path d="M18 9v6" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M9 6h6" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M6 9v2c0 2.2 1.8 4 4 4h5" strokeLinecap="round" strokeLinejoin="round"/>
+              <circle cx="18" cy="18" r="3" />
+              <circle cx="6" cy="6" r="3" />
+              <circle cx="18" cy="6" r="3" />
+            </svg>
+          </div>
+          <h3 className="text-[#3E453F] font-bold text-lg">GirlScript Summer of Code 2026</h3>
+          <p className="text-[#6E766F] text-sm mt-2 max-w-xs leading-relaxed">
+            Actively contributing to open source projects, reviewing pull requests, and building features in collaborative environments.
+          </p>
+        </div>
+      );
+
+    case "activities":
+      return (
+        <div className="p-4 space-y-2 text-sm text-[#3E453F]">
+          <h3 className="font-medium border-b border-[#DCE1DB] pb-2 mb-3">Highlights & Initiatives</h3>
+          <ul className="list-disc list-outside ml-4 space-y-3 text-[#5B6259]">
+            <li><strong className="text-[#3E453F]">Google Summer of Code (GSoC) 2026:</strong> Official applicant for the mid-March intake.</li>
+            <li><strong className="text-[#3E453F]">30-Day Learning Sprint:</strong> Designed and executed an intensive holiday curriculum covering cloud computing, DevOps, and MLOps (Dec 2025).</li>
+            <li><strong className="text-[#3E453F]">Technical Collaborator:</strong> Active participant in university coding clubs and collaborative group projects.</li>
+          </ul>
+        </div>
+      );
+
+    case "music":
+      return <LofiPlayer />;
 
     case "trash":
       return (

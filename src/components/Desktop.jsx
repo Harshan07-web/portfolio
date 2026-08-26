@@ -21,7 +21,7 @@ export default function Desktop() {
   // Splits icons between left and right sides on initial load
   const [iconPos, setIconPos] = useState(() => {
     const pos = {};
-    const rightAlignIds = ["settings", "gallery", "browser", "trash", "aim_trainer", "music", "database", "blockchain"];
+    const rightAlignIds = ["settings", "browser", "music", "trash", "certificates", "hackathons", "gssoc", "activities"];
     let leftIdx = 0;
     let rightIdx = 0;
     
