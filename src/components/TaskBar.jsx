@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { apps } from "../data/apps";
-import { AppIcon, SearchIcon, WifiIcon, StartIcon, BatteryIcon, BellIcon } from "./Icons";
+import { AppIcon, SearchIcon, WifiIcon, StartIcon, BatteryIcon, BellIcon, NotificationIcon } from "./Icons";
 
 const BATTERY_TICK_MS = 4 * 60 * 1000; // drain 1% every 4 minutes
 const BATTERY_FLOOR = 6; // "recharges" once it hits this
@@ -74,12 +74,14 @@ function NotificationPanel({ notifications, loading }) {
             rel="noreferrer"
             className="flex items-start gap-3 px-4 py-3 border-b border-[#EEF1EC] hover:bg-[#EEF1EC] transition-colors"
           >
-            <div className="mt-0.5 text-base">{n.icon}</div>
+            <div className="mt-0.5 text-[#5B8266]">
+              <NotificationIcon type={n.icon} className="w-4 h-4" />
+            </div>
             <div>
-              <div className="text-xs text-[#2E332F] leading-snug">{n.message}</div>
-              <div className="mt-1 text-[10px] text-[#9AA098] font-mono uppercase">
+              <div className="text-[10px] font-mono uppercase tracking-wide text-[#5B8266] font-semibold">
                 {n.platform} · {n.repo} · {n.relTime}
               </div>
+              <div className="mt-1 text-xs text-[#2E332F] leading-snug">{n.message}</div>
             </div>
           </a>
         ))}
@@ -189,7 +191,7 @@ const loadNotifications = async () => {
                 // Some pushes DO include the full commit list — use it when present.
                 return commits.map((c) => ({
                   id: c.sha,
-                  icon: "🐙",
+                  icon: "push",
                   platform: "GitHub",
                   message: c.message.split("\n")[0],
                   repo: repoLabel(e.repo.name),
@@ -205,7 +207,7 @@ const loadNotifications = async () => {
               if (!head) return [];
               return [{
                 id: `push-${e.id}`,
-                icon: "🐙",
+                icon: "push",
                 platform: "GitHub",
                 message: `Pushed to ${branch || "repo"}`,
                 repo: repoLabel(e.repo.name),
@@ -216,7 +218,7 @@ const loadNotifications = async () => {
             case "PullRequestEvent":
               return [{
                 id: e.id,
-                icon: "🔀",
+                icon: "merge",
                 platform: "GitHub",
                 message: `${e.payload.action} PR: ${e.payload.pull_request.title}`,
                 repo: repoLabel(e.repo.name),
@@ -226,7 +228,7 @@ const loadNotifications = async () => {
             case "PullRequestReviewEvent":
               return [{
                 id: e.id,
-                icon: "🔍",
+                icon: "review",
                 platform: "GitHub",
                 message: `Reviewed PR: ${e.payload.pull_request.title}`,
                 repo: repoLabel(e.repo.name),
@@ -236,7 +238,7 @@ const loadNotifications = async () => {
             case "IssuesEvent":
               return [{
                 id: e.id,
-                icon: "📋",
+                icon: "issue",
                 platform: "GitHub",
                 message: `${e.payload.action} issue: ${e.payload.issue.title}`,
                 repo: repoLabel(e.repo.name),
@@ -246,7 +248,7 @@ const loadNotifications = async () => {
             case "IssueCommentEvent":
               return [{
                 id: e.id,
-                icon: "💬",
+                icon: "comment",
                 platform: "GitHub",
                 message: `Commented on: ${e.payload.issue.title}`,
                 repo: repoLabel(e.repo.name),
@@ -258,7 +260,7 @@ const loadNotifications = async () => {
               if (refType === "repository") {
                 return [{
                   id: e.id,
-                  icon: "✨",
+                  icon: "create-repo",
                   platform: "GitHub",
                   message: `Created repository`,
                   repo: repoLabel(e.repo.name),
@@ -269,7 +271,7 @@ const loadNotifications = async () => {
               if (refType === "branch" || refType === "tag") {
                 return [{
                   id: e.id,
-                  icon: "🌿",
+                  icon: "branch",
                   platform: "GitHub",
                   message: `Created ${refType}: ${e.payload?.ref}`,
                   repo: repoLabel(e.repo.name),
@@ -282,7 +284,7 @@ const loadNotifications = async () => {
             case "ForkEvent":
               return [{
                 id: e.id,
-                icon: "🍴",
+                icon: "fork",
                 platform: "GitHub",
                 message: `Forked repository`,
                 repo: repoLabel(e.repo.name),
@@ -292,7 +294,7 @@ const loadNotifications = async () => {
             case "WatchEvent":
               return [{
                 id: e.id,
-                icon: "⭐",
+                icon: "star",
                 platform: "GitHub",
                 message: `Starred repository`,
                 repo: repoLabel(e.repo.name),
@@ -302,7 +304,7 @@ const loadNotifications = async () => {
             case "ReleaseEvent":
               return [{
                 id: e.id,
-                icon: "🚀",
+                icon: "release",
                 platform: "GitHub",
                 message: `Published release: ${e.payload?.release?.tag_name || ""}`,
                 repo: repoLabel(e.repo.name),
@@ -325,7 +327,7 @@ const loadNotifications = async () => {
       ghItems = [
         {
           id: "gh-mock-1",
-          icon: "🐙",
+          icon: "push",
           platform: "GitHub",
           message: "Refactored Airflow DAGs for data ingestion pipeline",
           repo: "futhommie-backend",
@@ -339,7 +341,7 @@ const loadNotifications = async () => {
     const extraItems = [
       {
         id: "lc-1",
-        icon: "🔶",
+        icon: "leetcode",
         platform: "LeetCode",
         message: "Solved: Median of Two Sorted Arrays (Hard)",
         repo: "Daily Challenge",
@@ -348,7 +350,7 @@ const loadNotifications = async () => {
       },
       {
         id: "nc-1",
-        icon: "💻",
+        icon: "neetcode",
         platform: "NeetCode",
         message: "Completed: Advanced Graphs Module",
         repo: "NeetCode 150",

@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { AppIcon } from "./Icons";
 
 const TASKBAR_HEIGHT = 40;
 const SNAP_THRESHOLD = 12;
@@ -128,8 +129,9 @@ export default function Window({ app, z, onClose, onFocus, onMinimize, children 
           onDoubleClick={toggleMaximize}
           className="flex items-center justify-between px-3 py-2 bg-[#EEF1EC] border-b border-[#DCE1DB] cursor-move"
         >
-          <span className="text-xs tracking-wide text-[#2E332F]">
-            {app.icon} {app.title}
+          <span className="flex items-center gap-1.5 text-xs tracking-wide text-[#2E332F]">
+            <AppIcon id={app.id} className="w-3.5 h-3.5 text-[#5B8266]" />
+            {app.title}
           </span>
           <div className="flex gap-2">
             <button

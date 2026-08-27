@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { projects } from "../data/apps";
+import { projects, LINKEDIN_URL, GITHUB_URL, EMAIL } from "../data/apps";
 
 const PROMPT = "harshan@portfolio ~ %";
 
@@ -48,16 +48,16 @@ function buildOutput(raw, print) {
 
     case "contact":
       return [
-        "email    : your-email@example.com",
-        "github   : github.com/Harshan07-web",
+        `email    : ${EMAIL}`,
+        `github   : ${GITHUB_URL.replace("https://", "")}`,
       ];
 
     case "github":
-      window.open("https://github.com/Harshan07-web", "_blank");
-      return ["opening github.com/Harshan07-web ..."];
+      window.open(GITHUB_URL, "_blank");
+      return [`opening ${GITHUB_URL.replace("https://", "")} ...`];
 
     case "linkedin":
-      window.open("https://linkedin.com/in/your-handle", "_blank");
+      window.open(LINKEDIN_URL, "_blank");
       return ["opening linkedin ..."];
 
     case "resume":

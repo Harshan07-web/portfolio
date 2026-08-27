@@ -1,4 +1,4 @@
-import { projects } from "../data/apps";
+import { projects, contributions, EMAIL, GITHUB_URL } from "../data/apps";
 import Terminal from "./Terminal";
 import { useState, useEffect, useRef } from "react";
 
@@ -164,13 +164,13 @@ export default function WindowContent({ appId }) {
       return (
         <div className="space-y-4 text-sm h-full flex flex-col justify-center px-4">
           <p className="text-[#6E766F] text-xs mb-2">Initialize connection protocol:</p>
-          <a className="flex items-center gap-3 text-[#3E453F] hover:text-[#5B8266]" href="mailto:your-email@example.com">
+          <a className="flex items-center gap-3 text-[#3E453F] hover:text-[#5B8266]" href={`mailto:${EMAIL}`}>
             <span className="font-mono text-xs bg-[#EEF1EC] px-2 py-1 rounded">MAIL</span>
-            your-email@example.com
+            {EMAIL}
           </a>
-          <a className="flex items-center gap-3 text-[#3E453F] hover:text-[#5B8266]" href="https://github.com/Harshan07-web" target="_blank" rel="noreferrer">
+          <a className="flex items-center gap-3 text-[#3E453F] hover:text-[#5B8266]" href={GITHUB_URL} target="_blank" rel="noreferrer">
             <span className="font-mono text-xs bg-[#EEF1EC] px-2 py-1 rounded">GIT</span>
-            github.com/Harshan07-web
+            {GITHUB_URL.replace("https://", "")}
           </a>
         </div>
       );
@@ -237,21 +237,44 @@ export default function WindowContent({ appId }) {
 
     case "gssoc":
       return (
-        <div className="h-full flex flex-col justify-center items-center text-center p-4">
-          <div className="w-16 h-16 bg-[#EEF1EC] rounded-full flex items-center justify-center text-2xl mb-4 text-[#5B8266]">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-8 h-8">
-              <path d="M18 9v6" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M9 6h6" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M6 9v2c0 2.2 1.8 4 4 4h5" strokeLinecap="round" strokeLinejoin="round"/>
-              <circle cx="18" cy="18" r="3" />
-              <circle cx="6" cy="6" r="3" />
-              <circle cx="18" cy="6" r="3" />
-            </svg>
+        <div className="h-full flex flex-col p-4 overflow-auto">
+          <div className="flex flex-col items-center text-center mb-5">
+            <div className="w-14 h-14 bg-[#EEF1EC] rounded-full flex items-center justify-center mb-3 text-[#5B8266]">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-7 h-7">
+                <path d="M18 9v6" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M9 6h6" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M6 9v2c0 2.2 1.8 4 4 4h5" strokeLinecap="round" strokeLinejoin="round"/>
+                <circle cx="18" cy="18" r="3" />
+                <circle cx="6" cy="6" r="3" />
+                <circle cx="18" cy="6" r="3" />
+              </svg>
+            </div>
+            <h3 className="text-[#3E453F] font-bold text-lg">GirlScript Summer of Code 2026</h3>
+            <p className="text-[#6E766F] text-xs mt-2 max-w-xs leading-relaxed">
+              Contributing to open source projects, reviewing pull requests, and shipping features in collaborative repos.
+            </p>
           </div>
-          <h3 className="text-[#3E453F] font-bold text-lg">GirlScript Summer of Code 2026</h3>
-          <p className="text-[#6E766F] text-sm mt-2 max-w-xs leading-relaxed">
-            Actively contributing to open source projects, reviewing pull requests, and building features in collaborative environments.
-          </p>
+          <div className="space-y-3 pr-1">
+            {contributions.map((c) => (
+              <a
+                key={c.name}
+                href={c.link}
+                target="_blank"
+                rel="noreferrer"
+                className="block border border-[#DCE1DB] rounded-md p-3 hover:border-[#5B8266] hover:bg-[#5B8266]/5 transition-all"
+              >
+                <div className="flex items-baseline justify-between gap-2">
+                  <div className="text-[#2E332F] font-medium">{c.name}</div>
+                  {c.upstream && (
+                    <div className="text-[9px] font-mono text-[#9AA098] whitespace-nowrap">
+                      fork of {c.upstream}
+                    </div>
+                  )}
+                </div>
+                <div className="text-xs text-[#6E766F] mt-1.5 leading-relaxed">{c.desc}</div>
+              </a>
+            ))}
+          </div>
         </div>
       );
 
