@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { apps } from "../data/apps";
+import { apps } from "../Data/apps";
 import { AppIcon, SearchIcon, WifiIcon, StartIcon, BatteryIcon, BellIcon, NotificationIcon } from "./Icons";
 
 const BATTERY_TICK_MS = 4 * 60 * 1000; // drain 1% every 4 minutes

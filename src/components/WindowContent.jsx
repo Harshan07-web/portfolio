@@ -1,4 +1,4 @@
-import { projects, contributions, EMAIL, GITHUB_URL } from "../data/apps";
+import { projects } from "../Data/apps";
 import Terminal from "./Terminal";
 import { useState, useEffect, useRef } from "react";
 
@@ -164,13 +164,13 @@ export default function WindowContent({ appId }) {
       return (
         <div className="space-y-4 text-sm h-full flex flex-col justify-center px-4">
           <p className="text-[#6E766F] text-xs mb-2">Initialize connection protocol:</p>
-          <a className="flex items-center gap-3 text-[#3E453F] hover:text-[#5B8266]" href={`mailto:${EMAIL}`}>
+          <a className="flex items-center gap-3 text-[#3E453F] hover:text-[#5B8266]" href="mailto:your-email@example.com">
             <span className="font-mono text-xs bg-[#EEF1EC] px-2 py-1 rounded">MAIL</span>
-            {EMAIL}
+            your-email@example.com
           </a>
-          <a className="flex items-center gap-3 text-[#3E453F] hover:text-[#5B8266]" href={GITHUB_URL} target="_blank" rel="noreferrer">
+          <a className="flex items-center gap-3 text-[#3E453F] hover:text-[#5B8266]" href="https://github.com/Harshan07-web" target="_blank" rel="noreferrer">
             <span className="font-mono text-xs bg-[#EEF1EC] px-2 py-1 rounded">GIT</span>
-            {GITHUB_URL.replace("https://", "")}
+            github.com/Harshan07-web
           </a>
         </div>
       );
@@ -209,72 +209,74 @@ export default function WindowContent({ appId }) {
       return (
         <div className="space-y-3 text-sm text-[#3E453F] p-2">
           <div className="p-3 border border-[#DCE1DB] rounded hover:border-[#5B8266] transition-colors cursor-default">
-            <div className="font-medium">AWS Certified Cloud Practitioner</div>
-            <div className="text-xs text-[#9AA098] mt-1">Amazon Web Services</div>
+            <div className="font-medium">ML Fundamentals</div>
+            <div className="text-xs text-[#9AA098] mt-1">LinkedIn Learning</div>
           </div>
           <div className="p-3 border border-[#DCE1DB] rounded hover:border-[#5B8266] transition-colors cursor-default">
-            <div className="font-medium">Data Engineering Professional Certificate</div>
-            <div className="text-xs text-[#9AA098] mt-1">Coursera</div>
+            <div className="font-medium">AI Fundamentals</div>
+            <div className="text-xs text-[#9AA098] mt-1">LinkedIn Learning</div>
+          </div>
+          <div className="p-3 border border-[#DCE1DB] rounded hover:border-[#5B8266] transition-colors cursor-default">
+            <div className="font-medium">AI Fundamentals</div>
+            <div className="text-xs text-[#9AA098] mt-1">IBM</div>
+          </div>
+          <div className="p-3 border border-[#DCE1DB] rounded hover:border-[#5B8266] transition-colors cursor-default">
+            <div className="font-medium">Intro to Databricks</div>
+            <div className="text-xs text-[#9AA098] mt-1">DataCamp</div>
           </div>
         </div>
       );
 
     case "hackathons":
       return (
-        <div className="space-y-4 font-mono text-xs p-2">
-          <div className="border border-[#DCE1DB] p-4 rounded bg-[#EEF1EC]/50">
-            <div className="text-[#E8B84B] text-sm font-bold">Smart India Hackathon (SIH) 2025</div>
-            <div className="text-[#5B6259] mt-2">Project: Blockchain-Based Blue Carbon Registry</div>
-            <div className="text-[#9AA098] mt-2">Built a decentralized ledger system to track and verify blue carbon credits.</div>
+        <div className="space-y-3 font-mono text-xs p-2">
+          <div className="border border-[#DCE1DB] p-4 rounded bg-[#EEF1EC]/50 flex items-center justify-between">
+            <div>
+              <div className="text-[#3E453F] text-sm font-bold">Smart Motion Hackathon</div>
+              <div className="text-[#9AA098] mt-1">Chennai Institute of Technology (CIT) · 2025</div>
+            </div>
+            <span className="text-[10px] text-[#5B8266] bg-[#5B8266]/10 px-2 py-1 rounded shrink-0">Participation</span>
           </div>
-          <div className="border border-[#DCE1DB] p-4 rounded bg-[#EEF1EC]/50">
-            <div className="text-[#5B8266] text-sm font-bold">Smart Motion Hackathon 2.0</div>
-            <div className="text-[#5B6259] mt-2">Chennai Institute of Technology (CIT) · Dec 2025</div>
-            <div className="text-[#9AA098] mt-2">Developed and proposed technical abstracts for local problem statements.</div>
+          <div className="border border-[#DCE1DB] p-4 rounded bg-[#EEF1EC]/50 flex items-center justify-between">
+            <div>
+              <div className="text-[#3E453F] text-sm font-bold">iterXY '26</div>
+              <div className="text-[#9AA098] mt-1">St. Joseph's College of Engineering</div>
+            </div>
+            <span className="text-[10px] text-[#5B8266] bg-[#5B8266]/10 px-2 py-1 rounded shrink-0">Participation</span>
+          </div>
+          <div className="border border-[#DCE1DB] p-4 rounded bg-[#EEF1EC]/50 flex items-center justify-between">
+            <div>
+              <div className="text-[#3E453F] text-sm font-bold">HackFusion</div>
+              <div className="text-[#9AA098] mt-1">Chennai Institute of Technology (CIT) · 2026</div>
+            </div>
+            <span className="text-[10px] text-[#5B8266] bg-[#5B8266]/10 px-2 py-1 rounded shrink-0">Participation</span>
+          </div>
+          <div className="border border-[#DCE1DB] p-4 rounded bg-[#EEF1EC]/50 flex items-center justify-between">
+            <div>
+              <div className="text-[#3E453F] text-sm font-bold">Google Solution Challenge</div>
+            </div>
+            <span className="text-[10px] text-[#5B8266] bg-[#5B8266]/10 px-2 py-1 rounded shrink-0">Participation</span>
           </div>
         </div>
       );
 
     case "gssoc":
       return (
-        <div className="h-full flex flex-col p-4 overflow-auto">
-          <div className="flex flex-col items-center text-center mb-5">
-            <div className="w-14 h-14 bg-[#EEF1EC] rounded-full flex items-center justify-center mb-3 text-[#5B8266]">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-7 h-7">
-                <path d="M18 9v6" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M9 6h6" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M6 9v2c0 2.2 1.8 4 4 4h5" strokeLinecap="round" strokeLinejoin="round"/>
-                <circle cx="18" cy="18" r="3" />
-                <circle cx="6" cy="6" r="3" />
-                <circle cx="18" cy="6" r="3" />
-              </svg>
-            </div>
-            <h3 className="text-[#3E453F] font-bold text-lg">GirlScript Summer of Code 2026</h3>
-            <p className="text-[#6E766F] text-xs mt-2 max-w-xs leading-relaxed">
-              Contributing to open source projects, reviewing pull requests, and shipping features in collaborative repos.
-            </p>
+        <div className="h-full flex flex-col justify-center items-center text-center p-4">
+          <div className="w-16 h-16 bg-[#EEF1EC] rounded-full flex items-center justify-center text-2xl mb-4 text-[#5B8266]">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-8 h-8">
+              <path d="M18 9v6" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M9 6h6" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M6 9v2c0 2.2 1.8 4 4 4h5" strokeLinecap="round" strokeLinejoin="round"/>
+              <circle cx="18" cy="18" r="3" />
+              <circle cx="6" cy="6" r="3" />
+              <circle cx="18" cy="6" r="3" />
+            </svg>
           </div>
-          <div className="space-y-3 pr-1">
-            {contributions.map((c) => (
-              <a
-                key={c.name}
-                href={c.link}
-                target="_blank"
-                rel="noreferrer"
-                className="block border border-[#DCE1DB] rounded-md p-3 hover:border-[#5B8266] hover:bg-[#5B8266]/5 transition-all"
-              >
-                <div className="flex items-baseline justify-between gap-2">
-                  <div className="text-[#2E332F] font-medium">{c.name}</div>
-                  {c.upstream && (
-                    <div className="text-[9px] font-mono text-[#9AA098] whitespace-nowrap">
-                      fork of {c.upstream}
-                    </div>
-                  )}
-                </div>
-                <div className="text-xs text-[#6E766F] mt-1.5 leading-relaxed">{c.desc}</div>
-              </a>
-            ))}
-          </div>
+          <h3 className="text-[#3E453F] font-bold text-lg">GirlScript Summer of Code 2026</h3>
+          <p className="text-[#6E766F] text-sm mt-2 max-w-xs leading-relaxed">
+            Actively contributing to open source projects, reviewing pull requests, and building features in collaborative environments.
+          </p>
         </div>
       );
 
@@ -283,9 +285,12 @@ export default function WindowContent({ appId }) {
         <div className="p-4 space-y-2 text-sm text-[#3E453F]">
           <h3 className="font-medium border-b border-[#DCE1DB] pb-2 mb-3">Highlights & Initiatives</h3>
           <ul className="list-disc list-outside ml-4 space-y-3 text-[#5B6259]">
-            <li><strong className="text-[#3E453F]">Google Summer of Code (GSoC) 2026:</strong> Official applicant for the mid-March intake.</li>
-            <li><strong className="text-[#3E453F]">30-Day Learning Sprint:</strong> Designed and executed an intensive holiday curriculum covering cloud computing, DevOps, and MLOps (Dec 2025).</li>
-            <li><strong className="text-[#3E453F]">Technical Collaborator:</strong> Active participant in university coding clubs and collaborative group projects.</li>
+            <li><strong className="text-[#3E453F]">Code Mavericks (AI/ML Coding Club):</strong> Member, 1st year.</li>
+            <li><strong className="text-[#3E453F]">Association of AIML:</strong> Executive Member, 3rd year.</li>
+            <li><strong className="text-[#3E453F]">Code Mavericks (AI/ML Coding Club):</strong> President, 4th year.</li>
+            <li><strong className="text-[#3E453F]">National-Level Technical Symposium:</strong> Coordinated the conduction of the event.</li>
+            <li><strong className="text-[#3E453F]">Coding Events:</strong> Conducted various coding events for the college community.</li>
+            <li><strong className="text-[#3E453F]">Volunteering:</strong> Volunteered at various events across college.</li>
           </ul>
         </div>
       );

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { projects, LINKEDIN_URL, GITHUB_URL, EMAIL } from "../data/apps";
+import { projects, LINKEDIN_URL, GITHUB_URL, EMAIL } from "../Data/apps";
 
 const PROMPT = "harshan@portfolio ~ %";
 
