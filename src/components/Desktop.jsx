@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { apps } from "../data/apps";
+import { apps } from "../Data/apps";
 import Window from "./Window";
 import Taskbar from "./TaskBar";
 import WindowContent from "./WindowContent";

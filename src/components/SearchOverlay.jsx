@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { apps } from "../data/apps";
+import { apps } from "../Data/apps";
 import { AppIcon } from "./Icons";
 
 export default function SearchOverlay({ onClose, onSelect }) {
