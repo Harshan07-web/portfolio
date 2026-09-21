@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 
-export default function EnterScreen({ onEnter }) {
+export default function EnterScreen({ onEnter, isMobile = false }) {
   useEffect(() => {
     const handler = (e) => {
       if (e.key === "Enter") onEnter();
@@ -20,7 +20,14 @@ export default function EnterScreen({ onEnter }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: 0.5 } }}
       transition={{ duration: 0.6 }}
-      className="w-full h-full flex flex-col items-center justify-center gap-10 bg-[#F4F6F3]"
+      // On phones the lock screen can also be swiped up to unlock
+      drag={isMobile ? "y" : false}
+      dragConstraints={{ top: 0, bottom: 0 }}
+      dragElastic={{ top: 0.5, bottom: 0 }}
+      onDragEnd={(_, info) => {
+        if (info.offset.y < -80 || info.velocity.y < -500) onEnter();
+      }}
+      className="relative w-full h-full flex flex-col items-center justify-center gap-10 bg-[#F4F6F3]"
     >
       <div className="text-center">
         <div className="text-6xl font-light tracking-tight text-[#2E332F]">{time}</div>
@@ -31,8 +38,18 @@ export default function EnterScreen({ onEnter }) {
         onClick={onEnter}
         className="border border-[#5B8266] text-[#5B8266] px-8 py-2 text-sm tracking-wide rounded-full hover:bg-[#5B8266] hover:text-white transition-colors duration-200"
       >
-        Press Enter
+        {isMobile ? "Tap to unlock" : "Press Enter"}
       </button>
+
+      {isMobile && (
+        <div
+          className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-2 text-[10px] tracking-widest uppercase text-[#9AA098]"
+          style={{ paddingBottom: "max(24px, env(safe-area-inset-bottom, 0px))" }}
+        >
+          <span>Swipe up</span>
+          <span className="block w-28 h-1 rounded-full bg-[#2E332F]/25" />
+        </div>
+      )}
     </motion.div>
   );
 }

@@ -1,1 +1,18 @@
 @import "tailwindcss";
+
+/* The root uses select-none; iOS Safari then refuses typing in inputs
+   (e.g. the terminal), so re-enable selection for form fields. */
+input,
+textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* Phone-OS feel: no rubber-banding of the page, no grey tap flash. */
+html,
+body {
+  overscroll-behavior: none;
+}
+* {
+  -webkit-tap-highlight-color: transparent;
+}
