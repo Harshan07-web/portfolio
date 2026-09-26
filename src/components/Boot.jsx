@@ -34,18 +34,18 @@ export default function Boot({ onDone }) {
     <motion.div
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4 }}
-      className="w-full h-full flex flex-col items-center justify-center gap-8 bg-[#F4F6F3]"
+      className="w-full h-full flex flex-col items-center justify-center gap-8 bg-[#EAF4FB]"
     >
-      <div className="text-2xl tracking-widest text-[#2E332F]">HARSHAN</div>
+      <div className="text-2xl tracking-widest text-[#1F2E3B]">HARSHAN</div>
 
       <div className="w-64">
-        <div className="h-[3px] w-full bg-[#DCE1DB] rounded-full overflow-hidden">
+        <div className="h-[3px] w-full bg-[#CFE3F2] rounded-full overflow-hidden">
           <div
-            className="h-full bg-[#5B8266] transition-all duration-150 ease-out rounded-full"
+            className="h-full bg-[#3E8ED9] transition-all duration-150 ease-out rounded-full"
             style={{ width: `${Math.min(progress, 100)}%` }}
           />
         </div>
-        <div className="mt-3 text-xs text-[#6E766F] flex justify-between">
+        <div className="mt-3 text-xs text-[#58748A] flex justify-between">
           <span>{label}...</span>
           <span>{Math.min(Math.round(progress), 100)}%</span>
         </div>

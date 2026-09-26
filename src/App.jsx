@@ -12,7 +12,7 @@ export default function App() {
   const isMobile = useIsMobile();
 
   return (
-    <div className="w-screen h-dvh overflow-hidden bg-[#F4F6F3] text-[#2E332F] font-mono select-none">
+    <div className="w-screen h-dvh overflow-hidden bg-[#EAF4FB] text-[#1F2E3B] font-mono select-none">
       <AnimatePresence mode="wait">
         {stage === "boot" && (
           <Boot key="boot" onDone={() => setStage("enter")} />

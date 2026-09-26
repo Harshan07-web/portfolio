@@ -12,11 +12,11 @@ import useActivityFeed from "../../hooks/useActivityFeed";
 
 // Same wallpaper language as the desktop: soft sage radial washes + faint line art.
 const WALLPAPER =
-  "radial-gradient(circle at 12% 8%, rgba(91,130,102,0.16), transparent 42%)," +
-  "radial-gradient(circle at 88% 14%, rgba(127,176,138,0.14), transparent 45%)," +
-  "radial-gradient(circle at 78% 88%, rgba(91,130,102,0.12), transparent 40%)," +
-  "radial-gradient(circle at 8% 86%, rgba(220,225,219,0.5), transparent 45%)," +
-  "linear-gradient(160deg, #F6F8F4 0%, #F1F4EF 45%, #EDF1EA 100%)";
+  "radial-gradient(circle at 12% 8%, rgba(62,142,217,0.16), transparent 42%)," +
+  "radial-gradient(circle at 88% 14%, rgba(95,181,232,0.14), transparent 45%)," +
+  "radial-gradient(circle at 78% 88%, rgba(62,142,217,0.12), transparent 40%)," +
+  "radial-gradient(circle at 8% 86%, rgba(207,227,242,0.5), transparent 45%)," +
+  "linear-gradient(160deg, #EFF8FF 0%, #E6F3FC 45%, #DCEEF9 100%)";
 
 export default function MobileOS() {
   const [openId, setOpenId] = useState(null);
@@ -66,11 +66,11 @@ export default function MobileOS() {
       style={{ background: WALLPAPER }}
     >
       <svg className="absolute inset-0 w-full h-full pointer-events-none" preserveAspectRatio="none" aria-hidden="true">
-        <circle cx="15%" cy="20%" r="220" fill="none" stroke="#5B8266" strokeOpacity="0.06" strokeWidth="1" />
-        <circle cx="15%" cy="20%" r="140" fill="none" stroke="#5B8266" strokeOpacity="0.05" strokeWidth="1" />
-        <circle cx="85%" cy="78%" r="260" fill="none" stroke="#5B8266" strokeOpacity="0.05" strokeWidth="1" />
-        <line x1="0" y1="35%" x2="100%" y2="30%" stroke="#5B8266" strokeOpacity="0.04" strokeWidth="1" />
-        <line x1="0" y1="72%" x2="100%" y2="76%" stroke="#5B8266" strokeOpacity="0.04" strokeWidth="1" />
+        <circle cx="15%" cy="20%" r="220" fill="none" stroke="#3E8ED9" strokeOpacity="0.06" strokeWidth="1" />
+        <circle cx="15%" cy="20%" r="140" fill="none" stroke="#3E8ED9" strokeOpacity="0.05" strokeWidth="1" />
+        <circle cx="85%" cy="78%" r="260" fill="none" stroke="#3E8ED9" strokeOpacity="0.05" strokeWidth="1" />
+        <line x1="0" y1="35%" x2="100%" y2="30%" stroke="#3E8ED9" strokeOpacity="0.04" strokeWidth="1" />
+        <line x1="0" y1="72%" x2="100%" y2="76%" stroke="#3E8ED9" strokeOpacity="0.04" strokeWidth="1" />
       </svg>
 
       <StatusBar time={time} battery={battery} hasUnseen={feed.hasUnseen} onBell={toggleShade} />

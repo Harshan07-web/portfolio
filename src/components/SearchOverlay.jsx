@@ -27,22 +27,22 @@ export default function SearchOverlay({ onClose, onSelect }) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.15 }}
       onClick={onClose}
-      className="absolute inset-0 bg-[#2E332F]/30 z-[100] flex items-start justify-center pt-32"
+      className="absolute inset-0 bg-[#1F2E3B]/30 z-[100] flex items-start justify-center pt-32"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-md bg-white border border-[#DCE1DB] shadow-lg rounded-lg overflow-hidden"
+        className="w-full max-w-md bg-white border border-[#CFE3F2] shadow-lg rounded-lg overflow-hidden"
       >
         <input
           ref={inputRef}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search apps..."
-          className="w-full px-4 py-3 bg-transparent text-sm text-[#2E332F] outline-none border-b border-[#DCE1DB] placeholder-[#9AA098]"
+          className="w-full px-4 py-3 bg-transparent text-sm text-[#1F2E3B] outline-none border-b border-[#CFE3F2] placeholder-[#7E97AC]"
         />
         <div className="max-h-64 overflow-auto">
           {results.length === 0 && (
-            <div className="px-4 py-3 text-xs text-[#9AA098]">
+            <div className="px-4 py-3 text-xs text-[#7E97AC]">
               No results
             </div>
           )}
@@ -53,9 +53,9 @@ export default function SearchOverlay({ onClose, onSelect }) {
                 onSelect(app);
                 onClose();
               }}
-              className="w-full flex items-center gap-3 px-4 py-2 text-left text-sm text-[#2E332F] hover:bg-[#EEF1EC]"
+              className="w-full flex items-center gap-3 px-4 py-2 text-left text-sm text-[#1F2E3B] hover:bg-[#E8F3FC]"
             >
-              <AppIcon id={app.id} className="w-4 h-4 text-[#5B8266]" />
+              <AppIcon id={app.id} className="w-4 h-4 text-[#3E8ED9]" />
               <span>{app.title}</span>
             </button>
           ))}

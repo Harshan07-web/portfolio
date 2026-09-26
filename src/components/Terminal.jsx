@@ -155,7 +155,7 @@ export default function Terminal() {
   return (
     <div
       onClick={() => inputRef.current?.focus()}
-      className="h-full w-full bg-[#1E211D] text-[#D7E4D3] font-mono text-xs rounded-md p-3 overflow-auto -m-4"
+      className="h-full w-full bg-[#17232D] text-[#D6EAF7] font-mono text-xs rounded-md p-3 overflow-auto -m-4"
       style={{ height: "calc(100% + 2rem)", width: "calc(100% + 2rem)" }}
     >
       {lines.map((line, i) => (
@@ -164,14 +164,14 @@ export default function Terminal() {
         </div>
       ))}
       <div className="flex gap-2">
-        <span className="text-[#7FB08A]">{PROMPT}</span>
+        <span className="text-[#5FB5E8]">{PROMPT}</span>
         <input
           ref={inputRef}
           autoFocus
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={onKeyDown}
-          className="flex-1 bg-transparent outline-none text-[#D7E4D3] caret-[#7FB08A]"
+          className="flex-1 bg-transparent outline-none text-[#D6EAF7] caret-[#5FB5E8]"
           spellCheck={false}
           autoComplete="off"
         />

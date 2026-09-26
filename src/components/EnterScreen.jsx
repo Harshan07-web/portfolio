@@ -27,27 +27,27 @@ export default function EnterScreen({ onEnter, isMobile = false }) {
       onDragEnd={(_, info) => {
         if (info.offset.y < -80 || info.velocity.y < -500) onEnter();
       }}
-      className="relative w-full h-full flex flex-col items-center justify-center gap-10 bg-[#F4F6F3]"
+      className="relative w-full h-full flex flex-col items-center justify-center gap-10 bg-[#EAF4FB]"
     >
       <div className="text-center">
-        <div className="text-6xl font-light tracking-tight text-[#2E332F]">{time}</div>
-        <div className="text-[#6E766F] mt-2 text-sm">{date}</div>
+        <div className="text-6xl font-light tracking-tight text-[#1F2E3B]">{time}</div>
+        <div className="text-[#58748A] mt-2 text-sm">{date}</div>
       </div>
 
       <button
         onClick={onEnter}
-        className="border border-[#5B8266] text-[#5B8266] px-8 py-2 text-sm tracking-wide rounded-full hover:bg-[#5B8266] hover:text-white transition-colors duration-200"
+        className="border border-[#3E8ED9] text-[#3E8ED9] px-8 py-2 text-sm tracking-wide rounded-full hover:bg-[#3E8ED9] hover:text-white transition-colors duration-200"
       >
         {isMobile ? "Tap to unlock" : "Press Enter"}
       </button>
 
       {isMobile && (
         <div
-          className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-2 text-[10px] tracking-widest uppercase text-[#9AA098]"
+          className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-2 text-[10px] tracking-widest uppercase text-[#7E97AC]"
           style={{ paddingBottom: "max(24px, env(safe-area-inset-bottom, 0px))" }}
         >
           <span>Swipe up</span>
-          <span className="block w-28 h-1 rounded-full bg-[#2E332F]/25" />
+          <span className="block w-28 h-1 rounded-full bg-[#1F2E3B]/25" />
         </div>
       )}
     </motion.div>

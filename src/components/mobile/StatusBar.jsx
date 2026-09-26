@@ -4,7 +4,7 @@ import { WifiIcon, BatteryIcon, BellIcon } from "../Icons";
 export default function StatusBar({ time, battery, hasUnseen, onBell }) {
   return (
     <div
-      className="absolute top-0 inset-x-0 z-30 flex items-center justify-between px-5 text-[#3E453F]"
+      className="absolute top-0 inset-x-0 z-30 flex items-center justify-between px-5 text-[#24384A]"
       style={{
         paddingTop: "env(safe-area-inset-top, 0px)",
         height: "calc(44px + env(safe-area-inset-top, 0px))",
@@ -14,7 +14,7 @@ export default function StatusBar({ time, battery, hasUnseen, onBell }) {
         {time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
       </span>
 
-      <div className="flex items-center gap-2.5 text-[#6E766F] text-xs">
+      <div className="flex items-center gap-2.5 text-[#58748A] text-xs">
         <WifiIcon className="w-3.5 h-3.5" />
         <span className="flex items-center gap-1">
           <BatteryIcon level={battery} className="w-4 h-4" />
@@ -23,7 +23,7 @@ export default function StatusBar({ time, battery, hasUnseen, onBell }) {
         <button
           onClick={onBell}
           aria-label="Notifications"
-          className="relative flex items-center justify-center w-8 h-8 -mr-1.5 rounded-full active:bg-[#5B8266]/15"
+          className="relative flex items-center justify-center w-8 h-8 -mr-1.5 rounded-full active:bg-[#3E8ED9]/15"
         >
           <BellIcon className="w-4 h-4" />
           {hasUnseen && (

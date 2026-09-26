@@ -5,6 +5,8 @@ import Window from "./Window";
 import Taskbar from "./TaskBar";
 import WindowContent from "./WindowContent";
 import SearchOverlay from "./SearchOverlay";
+import Wallpaper from "./Wallpaper";
+import IntroOverlay from "./IntroOverlay";
 import { AppIcon } from "./Icons";
 
 let zCounter = 10;
@@ -12,19 +14,24 @@ let zCounter = 10;
 const ICON_W = 76;
 const ICON_H = 76;
 const DRAG_THRESHOLD = 4;
+const INTRO_SEEN_KEY = "harshanos_intro_seen_v1";
 
 export default function Desktop() {
   const [openWindows, setOpenWindows] = useState([]);
   const [selectedIcon, setSelectedIcon] = useState(null);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [introDone, setIntroDone] = useState(
+    () => typeof window !== "undefined" && localStorage.getItem(INTRO_SEEN_KEY) === "1"
+  );
 
-  // Splits icons between left and right sides on initial load
+  // Splits icons between left and right edges on initial load — two columns
+  // hugging the left edge, one column hugging the right edge.
   const [iconPos, setIconPos] = useState(() => {
     const pos = {};
     const rightAlignIds = ["settings", "browser", "music", "trash", "certificates", "hackathons", "gssoc", "activities"];
     let leftIdx = 0;
     let rightIdx = 0;
-    
+
     const vw = typeof window !== "undefined" ? window.innerWidth : 1200;
 
     apps.forEach((app) => {
@@ -32,12 +39,23 @@ export default function Desktop() {
         pos[app.id] = { top: 24 + rightIdx * ICON_H, left: vw - ICON_W - 24 };
         rightIdx++;
       } else {
-        pos[app.id] = { top: 24 + leftIdx * ICON_H, left: 24 };
+        const col = leftIdx % 2;
+        const row = Math.floor(leftIdx / 2);
+        pos[app.id] = { top: 24 + row * ICON_H, left: 24 + col * ICON_W };
         leftIdx++;
       }
     });
     return pos;
   });
+
+  const handleIntroDone = () => {
+    try {
+      localStorage.setItem(INTRO_SEEN_KEY, "1");
+    } catch {
+      // ignore (e.g. private browsing storage restrictions)
+    }
+    setIntroDone(true);
+  };
 
   const dragInfo = useRef(null);
 
@@ -218,78 +236,33 @@ export default function Desktop() {
       className="w-full h-full relative overflow-hidden"
       style={{
         background:
-          "radial-gradient(circle at 12% 8%, rgba(91,130,102,0.16), transparent 42%)," +
-          "radial-gradient(circle at 88% 14%, rgba(127,176,138,0.14), transparent 45%)," +
-          "radial-gradient(circle at 78% 88%, rgba(91,130,102,0.12), transparent 40%)," +
-          "radial-gradient(circle at 8% 86%, rgba(220,225,219,0.5), transparent 45%)," +
-          "linear-gradient(160deg, #F6F8F4 0%, #F1F4EF 45%, #EDF1EA 100%)",
+          "radial-gradient(circle at 12% 8%, rgba(62,142,217,0.16), transparent 42%)," +
+          "radial-gradient(circle at 88% 14%, rgba(95,181,232,0.14), transparent 45%)," +
+          "radial-gradient(circle at 78% 88%, rgba(62,142,217,0.12), transparent 40%)," +
+          "radial-gradient(circle at 8% 86%, rgba(207,227,242,0.5), transparent 45%)," +
+          "linear-gradient(160deg, #EFF8FF 0%, #E6F3FC 45%, #DCEEF9 100%)",
       }}
       onMouseDown={() => setSelectedIcon(null)}
     >
+      <Wallpaper active={introDone} />
+
       <svg
         className="absolute inset-0 w-full h-full pointer-events-none"
         preserveAspectRatio="none"
         aria-hidden="true"
       >
-        <circle cx="15%" cy="20%" r="220" fill="none" stroke="#5B8266" strokeOpacity="0.06" strokeWidth="1" />
-        <circle cx="15%" cy="20%" r="140" fill="none" stroke="#5B8266" strokeOpacity="0.05" strokeWidth="1" />
-        <circle cx="85%" cy="78%" r="260" fill="none" stroke="#5B8266" strokeOpacity="0.05" strokeWidth="1" />
-        <line x1="0" y1="35%" x2="100%" y2="30%" stroke="#5B8266" strokeOpacity="0.04" strokeWidth="1" />
-        <line x1="0" y1="72%" x2="100%" y2="76%" stroke="#5B8266" strokeOpacity="0.04" strokeWidth="1" />
+        <circle cx="15%" cy="20%" r="220" fill="none" stroke="#3E8ED9" strokeOpacity="0.06" strokeWidth="1" />
+        <circle cx="15%" cy="20%" r="140" fill="none" stroke="#3E8ED9" strokeOpacity="0.05" strokeWidth="1" />
+        <circle cx="85%" cy="78%" r="260" fill="none" stroke="#3E8ED9" strokeOpacity="0.05" strokeWidth="1" />
+        <line x1="0" y1="35%" x2="100%" y2="30%" stroke="#3E8ED9" strokeOpacity="0.04" strokeWidth="1" />
+        <line x1="0" y1="72%" x2="100%" y2="76%" stroke="#3E8ED9" strokeOpacity="0.04" strokeWidth="1" />
       </svg>
 
-      {/* About Section — Centered Bento Grid */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] max-w-4xl flex flex-col justify-center pointer-events-none select-none z-0">
-        
-        <div className="flex items-end justify-between border-b border-[#5B8266]/20 pb-6 mb-6">
-          <div>
-            <h1 className="text-7xl font-medium text-[#3E453F] tracking-tighter">
-              Harshan
-            </h1>
-            <p className="mt-2 text-sm text-[#5B8266] font-mono uppercase tracking-widest">
-              Data Engineer // CS Student
-            </p>
-          </div>
-          <div className="flex items-center gap-2 mb-2">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#5B8266] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#5B8266]"></span>
-            </span>
-            <span className="text-[10px] font-mono text-[#8A9086] tracking-wider">SYSTEM_ONLINE</span>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          <div className="bg-white/40 border border-[#DCE1DB]/80 p-5 rounded-xl backdrop-blur-md shadow-sm">
-            <h3 className="text-[10px] font-mono text-[#5B8266] mb-2.5 uppercase tracking-wider">01. The Stack</h3>
-            <p className="text-xs leading-relaxed text-[#5B6259]">
-              Working across Python, FastAPI, React, and applied ML to build full-stack products, data pipelines, and robust ETL workflows end to end.
-            </p>
-          </div>
-          
-          <div className="bg-white/40 border border-[#DCE1DB]/80 p-5 rounded-xl backdrop-blur-md shadow-sm">
-            <h3 className="text-[10px] font-mono text-[#5B8266] mb-2.5 uppercase tracking-wider">02. Current Focus</h3>
-            <p className="text-xs leading-relaxed text-[#5B6259]">
-              Orchestration with Airflow, warehousing with Snowflake, and engineering backend systems that move and shape data reliably at scale.
-            </p>
-          </div>
-
-          <div className="bg-white/40 border border-[#DCE1DB]/80 p-5 rounded-xl backdrop-blur-md shadow-sm col-span-2">
-            <h3 className="text-[10px] font-mono text-[#5B8266] mb-2.5 uppercase tracking-wider">03. Recent Deployments</h3>
-            <p className="text-xs leading-relaxed text-[#5B6259]">
-              Architected Rx-Block, a blockchain-powered pharmaceutical tracking system, alongside FutHommie, a football statistics platform featuring a complete FastAPI/MySQL ETL pipeline.
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-6 flex flex-wrap gap-2">
-          {['Python', 'FastAPI', 'React', 'MySQL', 'Airflow', 'Snowflake', 'Web3.py', 'Solidity'].map(tag => (
-            <span key={tag} className="px-3 py-1.5 bg-[#5B8266]/5 border border-[#5B8266]/20 rounded-md text-[10px] text-[#5B8266] font-mono tracking-wide">
-              {tag}
-            </span>
-          ))}
-        </div>
-      </div>
+      {/* First-visit only: big centered name + a one-time "how this works" tip.
+          Fades out for good once dismissed (tracked in localStorage). */}
+      <AnimatePresence>
+        {!introDone && <IntroOverlay key="intro" onDone={handleIntroDone} />}
+      </AnimatePresence>
 
       {apps.filter((app) => app.id !== "about").map((app) => {
         const p = iconPos[app.id] || { top: 24, left: 24 };
@@ -306,11 +279,22 @@ export default function Desktop() {
             onDoubleClick={() => openApp(app)}
             style={{ position: "absolute", top: p.top, left: p.left, width: ICON_W }}
             className={`flex flex-col items-center gap-1 p-2 rounded-lg select-none cursor-default ${
-              selectedIcon === app.id ? "bg-[#5B8266]/15" : ""
+              selectedIcon === app.id ? "bg-[#3E8ED9]/15" : ""
             }`}
           >
-            <AppIcon id={app.id} className="w-7 h-7 text-[#3E453F]" />
-            <span className="text-xs text-[#2E332F] text-center leading-tight shadow-white drop-shadow-md">
+            <AppIcon
+              id={app.id}
+              className={`w-7 h-7 transition-colors ${
+                introDone ? "text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.55)]" : "text-[#24384A]"
+              }`}
+            />
+            <span
+              className={`text-xs text-center leading-tight transition-colors ${
+                introDone
+                  ? "text-white [text-shadow:0_1px_4px_rgba(0,0,0,0.7)]"
+                  : "text-[#1F2E3B] drop-shadow-md"
+              }`}
+            >
               {app.title}
             </span>
           </button>
