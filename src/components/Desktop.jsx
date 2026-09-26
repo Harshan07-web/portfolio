@@ -5,7 +5,7 @@ import Window from "./Window";
 import Taskbar from "./TaskBar";
 import WindowContent from "./WindowContent";
 import SearchOverlay from "./SearchOverlay";
-import Wallpaper from "./Wallpaper";
+import Wallpaper, { DEFAULT_THEME } from "./Wallpaper";
 import IntroOverlay from "./IntroOverlay";
 import { AppIcon } from "./Icons";
 
@@ -14,15 +14,13 @@ let zCounter = 10;
 const ICON_W = 76;
 const ICON_H = 76;
 const DRAG_THRESHOLD = 4;
-const INTRO_SEEN_KEY = "harshanos_intro_seen_v1";
 
 export default function Desktop() {
   const [openWindows, setOpenWindows] = useState([]);
   const [selectedIcon, setSelectedIcon] = useState(null);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [introDone, setIntroDone] = useState(
-    () => typeof window !== "undefined" && localStorage.getItem(INTRO_SEEN_KEY) === "1"
-  );
+  const [introDone, setIntroDone] = useState(false);
+  const [taskbarTheme, setTaskbarTheme] = useState(DEFAULT_THEME);
 
   // Splits icons between left and right edges on initial load — two columns
   // hugging the left edge, one column hugging the right edge.
@@ -48,14 +46,7 @@ export default function Desktop() {
     return pos;
   });
 
-  const handleIntroDone = () => {
-    try {
-      localStorage.setItem(INTRO_SEEN_KEY, "1");
-    } catch {
-      // ignore (e.g. private browsing storage restrictions)
-    }
-    setIntroDone(true);
-  };
+  const handleIntroDone = () => setIntroDone(true);
 
   const dragInfo = useRef(null);
 
@@ -244,7 +235,7 @@ export default function Desktop() {
       }}
       onMouseDown={() => setSelectedIcon(null)}
     >
-      <Wallpaper active={introDone} />
+      <Wallpaper active={introDone} onPaletteChange={setTaskbarTheme} />
 
       <svg
         className="absolute inset-0 w-full h-full pointer-events-none"
@@ -258,8 +249,7 @@ export default function Desktop() {
         <line x1="0" y1="72%" x2="100%" y2="76%" stroke="#3E8ED9" strokeOpacity="0.04" strokeWidth="1" />
       </svg>
 
-      {/* First-visit only: big centered name + a one-time "how this works" tip.
-          Fades out for good once dismissed (tracked in localStorage). */}
+        {/* Big centered name and a brief guide shown on every visit. */}
       <AnimatePresence>
         {!introDone && <IntroOverlay key="intro" onDone={handleIntroDone} />}
       </AnimatePresence>
@@ -319,6 +309,7 @@ export default function Desktop() {
       })}
 
       <Taskbar
+        theme={taskbarTheme}
         openWindows={openWindows}
         apps={apps}
         onIconClick={(id) => {

@@ -23,7 +23,7 @@ function CalendarPopup({ date }) {
   for (let d = 1; d <= daysInMonth; d++) cells.push(d);
 
   return (
-    <div className="absolute bottom-11 right-0 w-64 bg-white border border-[#CFE3F2] rounded-lg shadow-lg overflow-hidden">
+    <div className="absolute bottom-12 right-0 w-64 bg-white border border-[#CFE3F2] rounded-lg shadow-lg overflow-hidden">
       <div className="px-3 py-2 text-xs text-[#1F2E3B] border-b border-[#CFE3F2]">
         {monthName}
       </div>
@@ -52,7 +52,7 @@ function CalendarPopup({ date }) {
 
 function NotificationPanel({ notifications, loading }) {
   return (
-    <div className="fixed top-0 right-0 bottom-10 w-80 bg-white border-l border-[#CFE3F2] shadow-lg z-[150] flex flex-col">
+    <div className="fixed top-0 right-0 bottom-11 w-80 bg-white border-l border-[#CFE3F2] shadow-lg z-[150] flex flex-col">
       <div className="px-4 py-3 border-b border-[#CFE3F2] text-xs tracking-wide text-[#1F2E3B] flex justify-between items-center">
         <span>Activity Feed</span>
         <span className="text-[9px] font-mono text-[#3E8ED9] bg-[#3E8ED9]/10 px-2 py-0.5 rounded">LIVE</span>
@@ -88,7 +88,7 @@ function NotificationPanel({ notifications, loading }) {
   );
 }
 
-export default function Taskbar({ openWindows, onIconClick, onSearchOpen, onCloseWindow, onOpenApp }) {
+export default function Taskbar({ theme, openWindows, onIconClick, onSearchOpen, onCloseWindow, onOpenApp }) {
   const [time, setTime] = useState(new Date());
   const [battery, setBattery] = useState(87);
   const [startOpen, setStartOpen] = useState(false);
@@ -171,18 +171,30 @@ const loadNotifications = async () => {
 
   return (
     <>
-    <div className="absolute bottom-0 left-0 right-0 h-10 bg-white border-t border-[#CFE3F2] flex items-center justify-between px-3 z-[100]">
+    <div
+      className="absolute bottom-0 left-0 right-0 h-11 border-t flex items-center justify-between px-3 z-[100] transition-colors duration-[2800ms]"
+      style={{
+        "--taskbar-border": theme.border,
+        "--taskbar-text": theme.text,
+        "--taskbar-muted": theme.muted,
+        "--taskbar-accent": theme.accent,
+        "--taskbar-hover": theme.hover,
+        backgroundColor: theme.surface,
+        borderColor: theme.border,
+        color: theme.text,
+      }}
+    >
       <div className="flex items-center gap-2 relative">
-        <WeatherWidget />
+        <WeatherWidget theme={theme} />
 
-        <div className="w-px h-5 bg-[#CFE3F2] mx-0.5" />
+        <div className="w-px h-5 bg-[var(--taskbar-border)] mx-0.5" />
 
         <button
           onClick={() => setStartOpen((s) => !s)}
           className={`flex items-center justify-center w-7 h-7 rounded-md border transition-colors ${
             startOpen
-              ? "border-[#3E8ED9] text-[#3E8ED9] bg-[#3E8ED9]/10"
-              : "border-[#CFE3F2] text-[#24384A] hover:border-[#3E8ED9] hover:text-[#3E8ED9]"
+              ? "border-[var(--taskbar-accent)] text-[var(--taskbar-accent)] bg-[var(--taskbar-hover)]"
+              : "border-[var(--taskbar-border)] text-[var(--taskbar-text)] hover:border-[var(--taskbar-accent)] hover:text-[var(--taskbar-accent)]"
           }`}
           aria-label="Start menu"
         >
@@ -217,13 +229,13 @@ const loadNotifications = async () => {
 
         <button
           onClick={onSearchOpen}
-          className="text-xs px-3 py-1 rounded-md border border-[#CFE3F2] text-[#24384A] hover:border-[#3E8ED9] hover:text-[#3E8ED9] flex items-center gap-1.5 transition-colors"
+          className="text-xs px-3 py-1 rounded-md border border-[var(--taskbar-border)] text-[var(--taskbar-text)] hover:border-[var(--taskbar-accent)] hover:text-[var(--taskbar-accent)] flex items-center gap-1.5 transition-colors"
         >
           <SearchIcon className="w-3 h-3" />
           Search
         </button>
 
-        <div className="w-px h-5 bg-[#CFE3F2] mx-0.5" />
+        <div className="w-px h-5 bg-[var(--taskbar-border)] mx-0.5" />
 
         {PINNED_IDS.map((id) => {
           const app = apps.find((a) => a.id === id);
@@ -237,8 +249,8 @@ const loadNotifications = async () => {
               aria-label={app.title}
               className={`relative flex items-center justify-center w-7 h-7 rounded-md border transition-colors ${
                 isOpen
-                  ? "border-[#3E8ED9]/50 text-[#3E8ED9] bg-[#3E8ED9]/10"
-                  : "border-[#CFE3F2] text-[#24384A] hover:border-[#3E8ED9] hover:text-[#3E8ED9]"
+                  ? "border-[var(--taskbar-accent)] text-[var(--taskbar-accent)] bg-[var(--taskbar-hover)]"
+                  : "border-[var(--taskbar-border)] text-[var(--taskbar-text)] hover:border-[var(--taskbar-accent)] hover:text-[var(--taskbar-accent)]"
               }`}
             >
               <AppIcon id={app.id} className="w-3.5 h-3.5" />
@@ -257,8 +269,8 @@ const loadNotifications = async () => {
               key={w.id}
               className={`flex items-center gap-1.5 text-xs pl-2.5 pr-1 py-1 rounded-md border ${
                 w.minimized
-                  ? "border-[#CFE3F2] text-[#7E97AC]"
-                  : "border-[#3E8ED9]/50 text-[#1F2E3B] bg-[#3E8ED9]/10"
+                  ? "border-[var(--taskbar-border)] text-[var(--taskbar-muted)]"
+                  : "border-[var(--taskbar-accent)] text-[var(--taskbar-text)] bg-[var(--taskbar-hover)]"
               }`}
             >
               <button onClick={() => onIconClick(w.id)} className="flex items-center gap-1.5">
@@ -280,7 +292,7 @@ const loadNotifications = async () => {
         })}
       </div>
 
-      <div className="flex items-center gap-3 text-[#58748A] text-xs relative bg-[#E8F3FC] border border-[#CFE3F2] rounded-md pl-3 pr-1.5 py-1">
+      <div className="flex items-center gap-3 text-[var(--taskbar-muted)] text-xs relative">
         <span title="Wi-Fi connected">
           <WifiIcon className="w-3.5 h-3.5" />
         </span>
@@ -292,10 +304,10 @@ const loadNotifications = async () => {
         <div ref={calendarRef} className="relative">
           <button
             onClick={() => setCalendarOpen((o) => !o)}
-            className="flex flex-col items-end leading-tight rounded-md px-1.5 py-0.5 hover:bg-white transition-colors"
+            className="flex flex-col items-end leading-tight rounded-md px-1.5 py-0.5 hover:bg-[var(--taskbar-hover)] transition-colors"
           >
             <span>{time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
-            <span className="text-[10px] text-[#7E97AC]">
+            <span className="text-[10px] text-[var(--taskbar-muted)]">
               {time.toLocaleDateString([], { month: "2-digit", day: "2-digit", year: "numeric" })}
             </span>
           </button>
@@ -304,7 +316,7 @@ const loadNotifications = async () => {
 
         <button
           onClick={toggleNotifications}
-          className="relative flex items-center justify-center w-7 h-7 rounded-md hover:bg-white transition-colors"
+          className="relative flex items-center justify-center w-7 h-7 rounded-md hover:bg-[var(--taskbar-hover)] transition-colors"
           aria-label="Notifications"
         >
           <BellIcon className="w-3.5 h-3.5" />

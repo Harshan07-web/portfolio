@@ -1,30 +1,42 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const INSTRUCTIONS_DELAY_MS = 900;
-const AUTO_DISMISS_MS = 7000;
+const MIN_VISIBLE_MS = 30_000;
+const AUTO_DISMISS_GRACE_MS = 5_000;
 
 export default function IntroOverlay({ onDone }) {
   const [showInstructions, setShowInstructions] = useState(false);
   const [leaving, setLeaving] = useState(false);
-
-  useEffect(() => {
-    const t = setTimeout(() => setShowInstructions(true), INSTRUCTIONS_DELAY_MS);
-    return () => clearTimeout(t);
-  }, []);
-
-  useEffect(() => {
-    if (!showInstructions) return;
-    const t = setTimeout(() => dismiss(), AUTO_DISMISS_MS);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showInstructions]);
+  const instructionsShownAt = useRef(null);
+  const dismissed = useRef(false);
 
   const dismiss = () => {
-    if (leaving) return;
+    if (
+      dismissed.current ||
+      instructionsShownAt.current === null ||
+      Date.now() - instructionsShownAt.current < MIN_VISIBLE_MS
+    ) return;
+
+    dismissed.current = true;
     setLeaving(true);
     setTimeout(() => onDone?.(), 550);
   };
+
+  useEffect(() => {
+    const instructionsTimer = setTimeout(() => {
+      instructionsShownAt.current = Date.now();
+      setShowInstructions(true);
+    }, INSTRUCTIONS_DELAY_MS);
+    const autoDismissTimer = setTimeout(
+      dismiss,
+      INSTRUCTIONS_DELAY_MS + MIN_VISIBLE_MS + AUTO_DISMISS_GRACE_MS
+    );
+    return () => {
+      clearTimeout(instructionsTimer);
+      clearTimeout(autoDismissTimer);
+    };
+  }, []);
 
   return (
     <motion.div
@@ -66,7 +78,7 @@ export default function IntroOverlay({ onDone }) {
                   me and what I've been working on.
                 </p>
                 <p className="mt-2 text-[10px] uppercase tracking-wider text-[#7E97AC]">
-                  Tap anywhere to dismiss
+                  Tap this message to dismiss after 30 seconds
                 </p>
               </div>
             </div>
@@ -75,7 +87,7 @@ export default function IntroOverlay({ onDone }) {
                 key={showInstructions ? "run" : "idle"}
                 initial={{ width: "0%" }}
                 animate={{ width: "100%" }}
-                transition={{ duration: AUTO_DISMISS_MS / 1000, ease: "linear" }}
+                transition={{ duration: (MIN_VISIBLE_MS + AUTO_DISMISS_GRACE_MS) / 1000, ease: "linear" }}
                 className="h-full bg-[#3E8ED9]"
               />
             </div>
